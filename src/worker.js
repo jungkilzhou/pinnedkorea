@@ -84,6 +84,46 @@ async function notify(env, origin, kind, b) {
   } catch (e) { /* best-effort */ }
 }
 
+const TG_LANGS = ['ko', 'en', 'ja', 'zh', 'tw', 'es', 'vi'];
+const TG_REPLY = {
+  ko: '안녕하세요, PINNED KOREA입니다.\n핀드 투게더 신청이 접수되었습니다. 매달 1~2팀을 선정해 이메일로 개별 연락드리며, 선정되지 않은 경우 별도 연락이 가지 않을 수 있습니다.\n신청 시 동의하신 내용(개인정보·촬영·초상권·비용·안전)은 신청 시각과 함께 기록되어 있고, 선정 후 사전 대화에서 한 번 더 확인합니다. 신청 정보는 선정되지 않으면 6개월 후 삭제됩니다.\n감사합니다.',
+  en: 'Hello from PINNED KOREA.\nWe have received your Pinned Together application. We choose 1–2 travelers each month and contact them personally by email; if you are not chosen, you may not hear from us.\nYour consents (privacy, filming/portrait, costs, safety) are recorded with the time you applied, and we will confirm them again in a pre-chat if you are chosen. If you are not chosen, your application is deleted after 6 months.\nThank you!',
+  ja: 'PINNED KOREAです。\nPinned Togetherのお申込みを受け付けました。毎月1〜2組を選考し、メールで個別にご連絡します。選ばれなかった場合はご連絡しないことがあります。\nお申込み時の同意内容（個人情報・撮影／肖像権・費用・安全）は申込時刻とともに記録されており、選ばれた場合は事前のやり取りで再度確認します。選ばれなかった場合、申込情報は6か月後に削除されます。\nありがとうございます。',
+  zh: '你好，这里是PINNED KOREA。\n我们已收到你的Pinned Together申请。每月选出1–2组并通过邮件单独联系；未入选时可能不会另行通知。\n你在申请时同意的内容（个人信息、拍摄/肖像权、费用、安全）已连同申请时间记录在案，入选后会在事前沟通中再次确认。未入选者的申请信息将在6个月后删除。\n谢谢！',
+  tw: '你好，這裡是PINNED KOREA。\n我們已收到你的Pinned Together申請。每月選出1–2組並以電子郵件單獨聯絡；未入選時可能不會另行通知。\n你在申請時同意的內容（個人資料、拍攝/肖像權、費用、安全）已連同申請時間記錄在案，入選後會在事前溝通中再次確認。未入選者的申請資料將於6個月後刪除。\n謝謝！',
+  es: 'Hola, somos PINNED KOREA.\nHemos recibido tu solicitud de Pinned Together. Elegimos 1–2 viajeros cada mes y los contactamos por correo; si no resultas elegido, es posible que no te escribamos.\nTus consentimientos (privacidad, grabación/imagen, costes, seguridad) quedan registrados con la hora de la solicitud y los confirmaremos de nuevo en la charla previa si te eligen. Si no te eligen, tu solicitud se borra a los 6 meses.\n¡Gracias!',
+  vi: 'Xin chào, đây là PINNED KOREA.\nChúng tôi đã nhận đăng ký Pinned Together của bạn. Mỗi tháng chúng tôi chọn 1–2 nhóm và liên hệ riêng qua email; nếu không được chọn, bạn có thể sẽ không nhận được liên hệ.\nCác nội dung bạn đã đồng ý (quyền riêng tư, quay phim/hình ảnh, chi phí, an toàn) được lưu cùng thời điểm đăng ký, và sẽ được xác nhận lại khi trò chuyện trước nếu bạn được chọn. Nếu không được chọn, thông tin đăng ký sẽ bị xóa sau 6 tháng.\nCảm ơn bạn!',
+};
+const TG_TYPE = { solo: '혼자', couple: '커플', 'friends-family': '친구·가족' };
+async function notifyTogether(env, origin, b) {
+  const rl = TG_LANGS.includes(b.replyLang) ? b.replyLang : 'en';
+  const payload = {
+    _subject: '[PINNED KOREA] 핀드 투게더 신청: ' + (clip(b.name, 40) || 'Traveler') + ' · ' + clip(b.place, 80),
+    _template: 'box', _captcha: 'false',
+    email: b.email,
+    _autoresponse: TG_REPLY[rl],
+    이름: clip(b.name, 40) || '(없음)',
+    이메일: b.email,
+    메신저: clip(b.msg, 80) || '(없음)',
+    국가: clip(b.country, 60) || '(없음)',
+    '안내 언어': rl,
+    유형: TG_TYPE[b.type] || b.type,
+    '가고 싶은 곳': clip(b.place, 80),
+    '희망 시기': clip(b.when, 40) || '(없음)',
+    내용: clip(b.note, 600) || '(없음)',
+    '동의 버전': b.consentV,
+    '동의 전문(신청자가 본 화면 언어: ' + b.siteLang + ')': clip(b.consent, 3000),
+    '접수 시각': new Date().toLocaleString('ko-KR', { timeZone: 'Asia/Seoul' }),
+  };
+  try {
+    await fetch('https://formsubmit.co/ajax/' + env.NOTIFY_EMAIL, {
+      method: 'POST',
+      headers: { 'content-type': 'application/json', accept: 'application/json', origin, referer: origin + '/' },
+      body: JSON.stringify(payload),
+    });
+  } catch (e) { /* best-effort: the application is already stored */ }
+}
+
 export class Board extends DurableObject {
   constructor(ctx, env) {
     super(ctx, env);
@@ -91,7 +131,8 @@ export class Board extends DurableObject {
     this.sql.exec(`CREATE TABLE IF NOT EXISTS posts(id INTEGER PRIMARY KEY AUTOINCREMENT, nick TEXT, place TEXT, body TEXT, ts INTEGER, th TEXT, likes INTEGER DEFAULT 0, reports INTEGER DEFAULT 0);
       CREATE TABLE IF NOT EXISTS replies(id INTEGER PRIMARY KEY AUTOINCREMENT, post_id INTEGER, nick TEXT, body TEXT, ts INTEGER, th TEXT, reports INTEGER DEFAULT 0);
       CREATE TABLE IF NOT EXISTS votes(post_id INTEGER, voter TEXT, PRIMARY KEY(post_id, voter));
-      CREATE TABLE IF NOT EXISTS rate(voter TEXT, ts INTEGER);`);
+      CREATE TABLE IF NOT EXISTS rate(voter TEXT, ts INTEGER);
+      CREATE TABLE IF NOT EXISTS together(id INTEGER PRIMARY KEY AUTOINCREMENT, ts INTEGER, name TEXT, email TEXT, msg TEXT, country TEXT, reply_lang TEXT, site_lang TEXT, type TEXT, place TEXT, when_ TEXT, note TEXT, consent_v TEXT, consent TEXT, vh TEXT);`);
   }
   rows(q, ...a) { return this.sql.exec(q, ...a).toArray(); }
   limited(voter) {
@@ -124,7 +165,13 @@ export class Board extends DurableObject {
     }
     if (u.pathname === '/rank-set') { await this.ctx.storage.put('rank', await req.text()); return Response.json({ ok: true }); }
     if (u.pathname === '/events-set') { await this.ctx.storage.put('events', await req.text()); return Response.json({ ok: true }); }
+    if (u.pathname === '/together-list') return Response.json({ rows: this.rows('SELECT * FROM together ORDER BY id DESC LIMIT 200') });
     const b = await req.json().catch(() => ({}));
+    if (u.pathname === '/together') {
+      if (this.limited(voter)) return Response.json({ error: 'rate' }, { status: 429 });
+      const r = this.rows('INSERT INTO together(ts,name,email,msg,country,reply_lang,site_lang,type,place,when_,note,consent_v,consent,vh) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?) RETURNING id', Date.now(), b.name, b.email, b.msg, b.country, b.replyLang, b.siteLang, b.type, b.place, b.when, b.note, b.consentV, b.consent, voter);
+      return Response.json({ id: r[0].id });
+    }
     if (u.pathname === '/post') {
       const nick = clip(b.nick, 24) || 'Traveler', place = clip(b.place, 60), body = clip(b.text, 600);
       if (!place || body.length < 4) return Response.json({ error: 'short' }, { status: 400 });
@@ -338,6 +385,33 @@ export default {
     }
     if (url.pathname === '/api/events-refresh' && req.method === 'POST' && env.REFRESH_TOKEN && req.headers.get('x-token') === env.REFRESH_TOKEN) {
       return json({ events: await refreshEvents(env), rank: await refreshRank(env).catch((e) => ({ ok: false, why: String(e) })) });
+    }
+    if (url.pathname === '/api/together') {
+      const stub = env.BOARD.get(env.BOARD.idFromName('main'));
+      if (req.method === 'GET') {
+        if (!env.REFRESH_TOKEN || req.headers.get('x-token') !== env.REFRESH_TOKEN) return json({ error: 'forbidden' }, 403);
+        const r = await stub.fetch('https://board/together-list');
+        return new Response(r.body, { status: r.status, headers: { 'content-type': 'application/json; charset=utf-8', 'cache-control': 'no-store' } });
+      }
+      if (req.method !== 'POST') return json({ error: 'method' }, 405);
+      const origin = req.headers.get('Origin');
+      if (!origin) return json({ error: 'forbidden' }, 403);
+      try { if (new URL(origin).host !== url.host) return json({ error: 'forbidden' }, 403); } catch (e) { return json({ error: 'forbidden' }, 403); }
+      const raw = await req.text();
+      if (raw.length > 12000) return json({ error: 'big' }, 413);
+      let x = {}; try { x = JSON.parse(raw); } catch (e) {}
+      if (x.hp) return json({ ok: true });
+      const b = {
+        name: clip(x.name, 40), email: clip(x.email, 120), msg: clip(x.msg, 80), country: clip(x.country, 60),
+        replyLang: TG_LANGS.includes(x.replyLang) ? x.replyLang : 'en', siteLang: TG_LANGS.includes(x.siteLang) ? x.siteLang : 'en',
+        type: TG_TYPE[x.type] ? x.type : 'solo', place: clip(x.place, 80), when: clip(x.when, 40), note: clip(x.note, 600),
+        consentV: clip(x.consentV, 30), consent: clip(x.consent, 3000),
+      };
+      if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(b.email) || b.place.length < 2 || b.consent.length < 80) return json({ error: 'invalid' }, 400);
+      const ip = req.headers.get('CF-Connecting-IP') || 'local';
+      const r = await stub.fetch('https://board/together', { method: 'POST', headers: { 'x-voter': await sha('pk|' + ip), 'content-type': 'application/json' }, body: JSON.stringify(b) });
+      if (r.ok && env.NOTIFY_EMAIL) ctx.waitUntil(notifyTogether(env, url.origin, b));
+      return new Response(r.body, { status: r.status, headers: { 'content-type': 'application/json; charset=utf-8', 'cache-control': 'no-store' } });
     }
     if (url.pathname.startsWith('/api/board')) {
       const origin = req.headers.get('Origin');
