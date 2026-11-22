@@ -8,6 +8,7 @@
     "run_worker_first": ["/api/*"]
   },
   "ai": { "binding": "AI" },
+  "vars": { "NOTIFY_EMAIL": "autoboxtv@gmail.com" },
   "durable_objects": { "bindings": [{ "name": "BOARD", "class_name": "Board" }] },
   "migrations": [{ "tag": "v1", "new_sqlite_classes": ["Board"] }]
 }

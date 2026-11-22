@@ -13,6 +13,27 @@ async function sha(t) {
   return [...new Uint8Array(d)].map((x) => x.toString(16).padStart(2, '0')).join('').slice(0, 32);
 }
 
+async function notify(env, origin, kind, b) {
+  const isPost = kind === 'post';
+  const payload = {
+    _subject: isPost ? '[PINNED KOREA] 새 글: ' + clip(b.place, 60) : '[PINNED KOREA] 새 답글 (글 #' + Number(b.postId) + ')',
+    _template: 'box', _captcha: 'false',
+    종류: isPost ? '새 글' : '새 답글',
+    닉네임: clip(b.nick, 24) || 'Traveler',
+    장소: isPost ? clip(b.place, 60) : '(글 #' + Number(b.postId) + ')',
+    내용: clip(b.text, 600),
+    시간: new Date().toLocaleString('ko-KR', { timeZone: 'Asia/Seoul' }),
+    바로가기: origin + '/#sec-board',
+  };
+  try {
+    await fetch('https://formsubmit.co/ajax/' + env.NOTIFY_EMAIL, {
+      method: 'POST',
+      headers: { 'content-type': 'application/json', accept: 'application/json', origin, referer: origin + '/' },
+      body: JSON.stringify(payload),
+    });
+  } catch (e) { /* best-effort */ }
+}
+
 export class Board extends DurableObject {
   constructor(ctx, env) {
     super(ctx, env);
@@ -89,7 +110,7 @@ export class Board extends DurableObject {
 }
 
 export default {
-  async fetch(req, env) {
+  async fetch(req, env, ctx) {
     const url = new URL(req.url);
     if (url.pathname === '/api/translate') {
       if (req.method !== 'POST') return json({ error: 'POST only' }, 405);
@@ -135,7 +156,12 @@ export default {
       const voter = await sha('pk|' + ip);
       const stub = env.BOARD.get(env.BOARD.idFromName('main'));
       const sub = url.pathname.replace('/api/board', '') || '/list';
-      const r = await stub.fetch('https://board' + sub + url.search, { method: req.method === 'GET' ? 'GET' : 'POST', headers: { 'x-voter': voter, 'content-type': 'application/json' }, body: req.method === 'GET' ? undefined : await req.text() });
+      const raw = req.method === 'GET' ? undefined : await req.text();
+      const r = await stub.fetch('https://board' + sub + url.search, { method: req.method === 'GET' ? 'GET' : 'POST', headers: { 'x-voter': voter, 'content-type': 'application/json' }, body: raw });
+      if (r.ok && (sub === '/post' || sub === '/reply') && env.NOTIFY_EMAIL) {
+        let b = {}; try { b = JSON.parse(raw); } catch (e) {}
+        ctx.waitUntil(notify(env, url.origin, sub === '/post' ? 'post' : 'reply', b));
+      }
       return new Response(r.body, { status: r.status, headers: { 'content-type': 'application/json; charset=utf-8', 'cache-control': 'no-store' } });
     }
     return env.ASSETS.fetch(req);
