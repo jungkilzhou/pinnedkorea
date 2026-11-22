@@ -112,7 +112,7 @@ async function notifyTogether(env, origin, b) {
     '희망 시기': clip(b.when, 40) || '(없음)',
     내용: clip(b.note, 600) || '(없음)',
     '동의 버전': b.consentV,
-    '동의 전문(신청자가 본 화면 언어: ' + b.siteLang + ')': clip(b.consent, 3000),
+    ['동의 전문(' + b.siteLang + ')']: clip(b.consent, 3000),
     '접수 시각': new Date().toLocaleString('ko-KR', { timeZone: 'Asia/Seoul' }),
   };
   try {
