@@ -4,110 +4,124 @@
 {
 "id": "c1",
 "k": "award",
-"t": "MMA2026 · 18th Melon Music Awards",
+"t": "MMA2026 멜론뮤직어워드",
 "s": "20261114",
 "e": "20261115",
 "r": "seoul",
 "la": 37.4982,
 "lo": 126.8671,
-"v": "고척스카이돔 Gocheok Sky Dome",
+"v": "고척스카이돔",
 "tags": [
 "MMA2026",
 "멜론뮤직어워드"
 ],
 "who": "aespa · IVE · NCT DREAM · ILLIT · PLAVE · ATEEZ · RIIZE · I.O.I",
 "src": "https://www.koreatimes.co.kr/entertainment/k-pop/20261014/mma2026-brings-26-k-pop-acts-to-gocheok-dome-for-2-night-spectacle",
-"st": "Korea Times"
+"st": "Korea Times",
+"te": "MMA2026 · 18th Melon Music Awards",
+"ve": "Gocheok Sky Dome",
+"i": "https://newsimg.koreatimes.co.kr/2026/10/14/7d9c6928-b20a-48e9-8159-0f8b5c41bc86.jpg"
 },
 {
 "id": "c2",
 "k": "kpop",
-"t": "WONDERLIVET 2026",
+"t": "원더라이벳 2026",
 "s": "20261120",
 "e": "20261122",
 "r": "gyeonggi",
 "la": 37.6689,
 "lo": 126.7459,
-"v": "KINTEX 2관 Exhibition Center II",
+"v": "킨텍스 2관",
 "tags": [
 "WONDERLIVET",
 "원더라이벳"
 ],
 "who": "J-POP & music festival",
 "src": "https://sports.khan.co.kr/en/article/202608252147007",
-"st": "Kyunghyang"
+"st": "Kyunghyang",
+"te": "WONDERLIVET 2026",
+"ve": "KINTEX Exhibition Hall 2"
 },
 {
 "id": "c3",
 "k": "kpop",
-"t": "NMIXX 1st World Tour Finale",
+"t": "엔믹스 월드투어 파이널",
 "s": "20261127",
 "e": "20261129",
 "r": "incheon",
 "la": 37.4426,
 "lo": 126.4533,
-"v": "인스파이어 아레나 Inspire Arena",
+"v": "인스파이어 아레나",
 "tags": [
 "NMIXX",
 "엔믹스콘서트"
 ],
 "who": "NMIXX",
 "src": "https://kpopofficial.com/schedule/south-korea/",
-"st": "kpopofficial.com"
+"st": "kpopofficial.com",
+"te": "NMIXX 1st World Tour Finale",
+"ve": "Inspire Arena, Incheon"
 },
 {
 "id": "c4",
 "k": "kpop",
-"t": "DAY6 Special Concert 'The Present'",
+"t": "데이식스 스페셜 콘서트 The Present",
 "s": "20261218",
 "e": "20261220",
 "r": "seoul",
 "la": 37.5189,
 "lo": 127.1269,
-"v": "KSPO DOME 올림픽공원",
+"v": "KSPO 돔 · 올림픽공원",
 "tags": [
 "DAY6",
 "데이식스콘서트"
 ],
 "who": "DAY6",
 "src": "https://sports.khan.co.kr/en/article/202611120000007",
-"st": "Kyunghyang"
+"st": "Kyunghyang",
+"te": "DAY6 Special Concert 'The Present'",
+"ve": "KSPO DOME, Olympic Park",
+"i": "https://images.khan.co.kr/article/2026/11/11/news-p.v1.20261111.4b668c0de7994e9ebe4b5233304a7f2c_P1.jpg"
 },
 {
 "id": "c5",
 "k": "award",
-"t": "2026 SBS Gayo Daejeon",
+"t": "2026 SBS 가요대전",
 "s": "20261224",
 "e": "20261225",
 "r": "gyeonggi",
 "la": 37.6689,
 "lo": 126.7459,
-"v": "KINTEX 일산 Ilsan",
+"v": "킨텍스 일산",
 "tags": [
 "SBS가요대전",
 "가요대전"
 ],
 "who": "Year-end music festival",
 "src": "https://gayo.sbs.co.kr",
-"st": "SBS (reported)"
+"st": "SBS (reported)",
+"te": "2026 SBS Gayo Daejeon",
+"ve": "KINTEX, Ilsan"
 },
 {
 "id": "c6",
 "k": "kpop",
-"t": "ATEEZ World Tour 'ZERO TO ALL'",
+"t": "에이티즈 월드투어 ZERO TO ALL",
 "s": "20270122",
 "e": "20270124",
 "r": "incheon",
 "la": 37.4426,
 "lo": 126.4533,
-"v": "NAVER ARENA at INSPIRE",
+"v": "네이버 아레나 인스파이어",
 "tags": [
 "ATEEZ",
 "에이티즈콘서트"
 ],
 "who": "ATEEZ",
 "src": "https://kpopofficial.com/schedule/south-korea/",
-"st": "kpopofficial.com"
+"st": "kpopofficial.com",
+"te": "ATEEZ World Tour 'ZERO TO ALL'",
+"ve": "NAVER ARENA at INSPIRE"
 },
 {
 "id": "c7",
@@ -124,7 +138,10 @@
 "송강"
 ],
 "src": "https://www.topstarnews.net/news/articleView.html?idxno=16246333",
-"st": "TopStarNews"
+"st": "TopStarNews",
+"te": "Song Kang Fan Meeting 'PLAY, SONG KANG in SEOUL'",
+"ve": "COEX Artium, Woori Bank Hall · 6 PM",
+"i": "https://cdn.topstarnews.net/news/photo/202610/16246333_2054398_1715_crop.jpg"
 },
 {
 "id": "c8",
@@ -141,7 +158,10 @@
 "신혜선"
 ],
 "src": "https://isplus.com/article/view/isp202611090197",
-"st": "일간스포츠"
+"st": "일간스포츠",
+"te": "Shin Hye-sun Fan Meeting [SUNNY INSIDE]",
+"ve": "Dongduk Women's Univ. Centennial Hall · 2 PM & 6 PM",
+"i": "https://isplus.com/data/isp/image/2026/11/09/isp20261109000200.800x.0.jpg"
 },
 {
 "id": "c9",
@@ -158,7 +178,9 @@
 "올리브영"
 ],
 "src": "https://benefitshub.co.kr/oliveyoung-sale/",
-"st": "혜택창고 (매월 25~27일 기준)"
+"st": "혜택창고 (매월 25~27일 기준)",
+"te": "Olive Young Day",
+"ve": "Olive Young stores nationwide · try Myeongdong"
 },
 {
 "id": "c10",
@@ -175,7 +197,9 @@
 "올리브영"
 ],
 "src": "https://benefitshub.co.kr/oliveyoung-sale/",
-"st": "혜택창고 (예정)"
+"st": "혜택창고 (예정)",
+"te": "Olive Young Year-End Sale",
+"ve": "Olive Young stores · dates tentative"
 },
 {
 "id": "c11",
@@ -192,7 +216,9 @@
 "올리브영"
 ],
 "src": "https://benefitshub.co.kr/oliveyoung-sale/",
-"st": "혜택창고 (추정)"
+"st": "혜택창고 (추정)",
+"te": "Olive Young Day (Dec)",
+"ve": "Olive Young stores · usually 25th–27th"
 }
 ]
 }

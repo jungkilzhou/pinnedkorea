@@ -180,6 +180,18 @@ export default {
         return json({ error: 'translate failed' }, 502);
       }
     }
+    if (url.pathname === '/api/weather') {
+      const f = (k) => parseFloat(url.searchParams.get(k));
+      const lat = f('lat'), lon = f('lon'), s = url.searchParams.get('s') || '', e = url.searchParams.get('e') || '';
+      if (!(lat > 32 && lat < 39) || !(lon > 124 && lon < 132) || !/^\d{4}-\d\d-\d\d$/.test(s) || !/^\d{4}-\d\d-\d\d$/.test(e)) return json({ error: 'bad' }, 400);
+      try {
+        const r = await fetch('https://api.open-meteo.com/v1/forecast?latitude=' + lat.toFixed(2) + '&longitude=' + lon.toFixed(2) + '&daily=temperature_2m_max,temperature_2m_min,precipitation_sum,snowfall_sum&timezone=Asia%2FSeoul&start_date=' + s + '&end_date=' + e, { cf: { cacheTtl: 3600, cacheEverything: true } });
+        if (!r.ok) return json({ error: 'upstream' }, 502);
+        const j = await r.json();
+        if (!j.daily) return json({ error: 'none' }, 502);
+        return new Response(JSON.stringify(j.daily), { headers: { 'content-type': 'application/json', 'cache-control': 'public, max-age=1800' } });
+      } catch (err) { return json({ error: 'fail' }, 502); }
+    }
     if (url.pathname === '/api/events') {
       const stub = env.BOARD.get(env.BOARD.idFromName('main'));
       const r = await stub.fetch('https://board/events');
