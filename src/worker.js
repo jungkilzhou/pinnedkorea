@@ -1,5 +1,6 @@
 // PINNED KOREA — static site + /api/translate (Cloudflare Workers AI)
-const CODES = { en: 'en', ko: 'ko', ja: 'ja', zh: 'zh', es: 'es' };
+const CODES = { en: 'en', ko: 'ko', ja: 'ja', zh: 'zh', tw: 'tw', es: 'es' };
+const NAMES = { en: 'English', ko: 'Korean', ja: 'Japanese', zh: 'Simplified Chinese', tw: 'Traditional Chinese (Taiwan)', es: 'Spanish' };
 const json = (o, status = 200) =>
   new Response(JSON.stringify(o), { status, headers: { 'content-type': 'application/json; charset=utf-8', 'cache-control': 'no-store' } });
 
@@ -17,8 +18,23 @@ export default {
       if (!text || !from || !to) return json({ error: 'bad request' }, 400);
       if (from === to) return json({ text });
       try {
-        const r = await env.AI.run('@cf/meta/m2m100-1.2b', { text, source_lang: from, target_lang: to });
-        const out = r && r.translated_text;
+        let out = '';
+        try {
+          const r = await env.AI.run('@cf/meta/llama-3.3-70b-instruct-fp8-fast', {
+            messages: [
+              { role: 'system', content: 'You are a professional live interpreter helping a traveler in Korea. Translate the user message from ' + NAMES[from] + ' to ' + NAMES[to] + '. Use natural, polite, spoken language that a native speaker would actually say. Keep names, numbers and addresses exact. Output ONLY the translation, with no quotes, notes or explanations.' },
+              { role: 'user', content: text },
+            ],
+            max_tokens: 300,
+            temperature: 0.2,
+          });
+          out = String((r && (r.response || (r.result && r.result.response))) || '').trim();
+        } catch (e) { out = ''; }
+        if (!out) {
+          const m = (c) => (c === 'tw' ? 'zh' : c);
+          const r2 = await env.AI.run('@cf/meta/m2m100-1.2b', { text, source_lang: m(from), target_lang: m(to) });
+          out = (r2 && r2.translated_text) || '';
+        }
         if (!out) return json({ error: 'empty' }, 502);
         return json({ text: out });
       } catch (e) {
