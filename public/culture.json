@@ -1,8 +1,198 @@
-{"upd":"2026-11-22","ev":[
-{"id":"c1","k":"award","t":"MMA2026 · 18th Melon Music Awards","s":"20261114","e":"20261115","r":"seoul","la":37.4982,"lo":126.8671,"v":"고척스카이돔 Gocheok Sky Dome","tags":["MMA2026","멜론뮤직어워드"],"who":"aespa · IVE · NCT DREAM · ILLIT · PLAVE · ATEEZ · RIIZE · I.O.I","src":"https://www.koreatimes.co.kr/entertainment/k-pop/20261014/mma2026-brings-26-k-pop-acts-to-gocheok-dome-for-2-night-spectacle","st":"Korea Times"},
-{"id":"c2","k":"kpop","t":"WONDERLIVET 2026","s":"20261120","e":"20261122","r":"gyeonggi","la":37.6689,"lo":126.7459,"v":"KINTEX 2관 Exhibition Center II","tags":["WONDERLIVET","원더라이벳"],"who":"J-POP & music festival","src":"https://sports.khan.co.kr/en/article/202608252147007","st":"Kyunghyang"},
-{"id":"c3","k":"kpop","t":"NMIXX 1st World Tour Finale","s":"20261127","e":"20261129","r":"incheon","la":37.4426,"lo":126.4533,"v":"인스파이어 아레나 Inspire Arena","tags":["NMIXX","엔믹스콘서트"],"who":"NMIXX","src":"https://kpopofficial.com/schedule/south-korea/","st":"kpopofficial.com"},
-{"id":"c4","k":"kpop","t":"DAY6 Special Concert 'The Present'","s":"20261218","e":"20261220","r":"seoul","la":37.5189,"lo":127.1269,"v":"KSPO DOME 올림픽공원","tags":["DAY6","데이식스콘서트"],"who":"DAY6","src":"https://sports.khan.co.kr/en/article/202611120000007","st":"Kyunghyang"},
-{"id":"c5","k":"award","t":"2026 SBS Gayo Daejeon","s":"20261224","e":"20261225","r":"gyeonggi","la":37.6689,"lo":126.7459,"v":"KINTEX 일산 Ilsan","tags":["SBS가요대전","가요대전"],"who":"Year-end music festival","src":"https://gayo.sbs.co.kr","st":"SBS (reported)"},
-{"id":"c6","k":"kpop","t":"ATEEZ World Tour 'ZERO TO ALL'","s":"20270122","e":"20270124","r":"incheon","la":37.4426,"lo":126.4533,"v":"NAVER ARENA at INSPIRE","tags":["ATEEZ","에이티즈콘서트"],"who":"ATEEZ","src":"https://kpopofficial.com/schedule/south-korea/","st":"kpopofficial.com"}
-]}
+{
+"upd": "2026-11-22T14:50:00+09:00",
+"ev": [
+{
+"id": "c1",
+"k": "award",
+"t": "MMA2026 · 18th Melon Music Awards",
+"s": "20261114",
+"e": "20261115",
+"r": "seoul",
+"la": 37.4982,
+"lo": 126.8671,
+"v": "고척스카이돔 Gocheok Sky Dome",
+"tags": [
+"MMA2026",
+"멜론뮤직어워드"
+],
+"who": "aespa · IVE · NCT DREAM · ILLIT · PLAVE · ATEEZ · RIIZE · I.O.I",
+"src": "https://www.koreatimes.co.kr/entertainment/k-pop/20261014/mma2026-brings-26-k-pop-acts-to-gocheok-dome-for-2-night-spectacle",
+"st": "Korea Times"
+},
+{
+"id": "c2",
+"k": "kpop",
+"t": "WONDERLIVET 2026",
+"s": "20261120",
+"e": "20261122",
+"r": "gyeonggi",
+"la": 37.6689,
+"lo": 126.7459,
+"v": "KINTEX 2관 Exhibition Center II",
+"tags": [
+"WONDERLIVET",
+"원더라이벳"
+],
+"who": "J-POP & music festival",
+"src": "https://sports.khan.co.kr/en/article/202608252147007",
+"st": "Kyunghyang"
+},
+{
+"id": "c3",
+"k": "kpop",
+"t": "NMIXX 1st World Tour Finale",
+"s": "20261127",
+"e": "20261129",
+"r": "incheon",
+"la": 37.4426,
+"lo": 126.4533,
+"v": "인스파이어 아레나 Inspire Arena",
+"tags": [
+"NMIXX",
+"엔믹스콘서트"
+],
+"who": "NMIXX",
+"src": "https://kpopofficial.com/schedule/south-korea/",
+"st": "kpopofficial.com"
+},
+{
+"id": "c4",
+"k": "kpop",
+"t": "DAY6 Special Concert 'The Present'",
+"s": "20261218",
+"e": "20261220",
+"r": "seoul",
+"la": 37.5189,
+"lo": 127.1269,
+"v": "KSPO DOME 올림픽공원",
+"tags": [
+"DAY6",
+"데이식스콘서트"
+],
+"who": "DAY6",
+"src": "https://sports.khan.co.kr/en/article/202611120000007",
+"st": "Kyunghyang"
+},
+{
+"id": "c5",
+"k": "award",
+"t": "2026 SBS Gayo Daejeon",
+"s": "20261224",
+"e": "20261225",
+"r": "gyeonggi",
+"la": 37.6689,
+"lo": 126.7459,
+"v": "KINTEX 일산 Ilsan",
+"tags": [
+"SBS가요대전",
+"가요대전"
+],
+"who": "Year-end music festival",
+"src": "https://gayo.sbs.co.kr",
+"st": "SBS (reported)"
+},
+{
+"id": "c6",
+"k": "kpop",
+"t": "ATEEZ World Tour 'ZERO TO ALL'",
+"s": "20270122",
+"e": "20270124",
+"r": "incheon",
+"la": 37.4426,
+"lo": 126.4533,
+"v": "NAVER ARENA at INSPIRE",
+"tags": [
+"ATEEZ",
+"에이티즈콘서트"
+],
+"who": "ATEEZ",
+"src": "https://kpopofficial.com/schedule/south-korea/",
+"st": "kpopofficial.com"
+},
+{
+"id": "c7",
+"k": "fanmeet",
+"t": "송강 팬미팅 PLAY, SONG KANG in SEOUL",
+"s": "20261205",
+"e": "20261205",
+"r": "seoul",
+"la": 37.5116,
+"lo": 127.059,
+"v": "코엑스 아티움 우리은행홀 · 오후 6시",
+"tags": [
+"송강팬미팅",
+"송강"
+],
+"src": "https://www.topstarnews.net/news/articleView.html?idxno=16246333",
+"st": "TopStarNews"
+},
+{
+"id": "c8",
+"k": "fanmeet",
+"t": "신혜선 팬미팅 [써니 인사이드]",
+"s": "20261212",
+"e": "20261212",
+"r": "seoul",
+"la": 37.6068,
+"lo": 127.0417,
+"v": "동덕여대 백주년기념관 · 오후 2시·6시",
+"tags": [
+"신혜선팬미팅",
+"신혜선"
+],
+"src": "https://isplus.com/article/view/isp202611090197",
+"st": "일간스포츠"
+},
+{
+"id": "c9",
+"k": "beauty",
+"t": "올영데이",
+"s": "20261125",
+"e": "20261127",
+"r": "seoul",
+"la": 37.5636,
+"lo": 126.9853,
+"v": "전국 올리브영 · 명동 매장 추천",
+"tags": [
+"올영데이",
+"올리브영"
+],
+"src": "https://benefitshub.co.kr/oliveyoung-sale/",
+"st": "혜택창고 (매월 25~27일 기준)"
+},
+{
+"id": "c10",
+"k": "beauty",
+"t": "연말 올영세일",
+"s": "20261130",
+"e": "20261206",
+"r": "seoul",
+"la": 37.5636,
+"lo": 126.9853,
+"v": "전국 올리브영 · 일정 예정(공식 확인)",
+"tags": [
+"올영세일",
+"올리브영"
+],
+"src": "https://benefitshub.co.kr/oliveyoung-sale/",
+"st": "혜택창고 (예정)"
+},
+{
+"id": "c11",
+"k": "beauty",
+"t": "올영데이 (12월)",
+"s": "20261225",
+"e": "20261227",
+"r": "seoul",
+"la": 37.5636,
+"lo": 126.9853,
+"v": "전국 올리브영 · 매월 25~27일 기준",
+"tags": [
+"올영데이",
+"올리브영"
+],
+"src": "https://benefitshub.co.kr/oliveyoung-sale/",
+"st": "혜택창고 (추정)"
+}
+]
+}

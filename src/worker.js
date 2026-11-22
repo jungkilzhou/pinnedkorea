@@ -139,7 +139,7 @@ async function refreshEvents(env) {
   if (!out.length) return { ok: false, why: 'empty' };
   out.sort((a, b) => (a.s + a.t).localeCompare(b.s + b.t));
   const stub = env.BOARD.get(env.BOARD.idFromName('main'));
-  await stub.fetch('https://board/events-set', { method: 'POST', body: JSON.stringify({ upd: d.toISOString().slice(0, 10), ev: out }) });
+  await stub.fetch('https://board/events-set', { method: 'POST', body: JSON.stringify({ upd: d.toISOString().slice(0, 19) + '+09:00', ev: out }) });
   return { ok: true, n: out.length };
 }
 
