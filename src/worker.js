@@ -68,6 +68,11 @@ export class Board extends DurableObject {
       const v = await this.ctx.storage.get('events');
       return v ? new Response(v, { headers: { 'content-type': 'application/json; charset=utf-8', 'cache-control': 'public, max-age=1800' } }) : Response.json({ error: 'none' }, { status: 404 });
     }
+    if (u.pathname === '/rank') {
+      const v = await this.ctx.storage.get('rank');
+      return v ? new Response(v, { headers: { 'content-type': 'application/json; charset=utf-8', 'cache-control': 'public, max-age=1800' } }) : Response.json({ error: 'none' }, { status: 404 });
+    }
+    if (u.pathname === '/rank-set') { await this.ctx.storage.put('rank', await req.text()); return Response.json({ ok: true }); }
     if (u.pathname === '/events-set') { await this.ctx.storage.put('events', await req.text()); return Response.json({ ok: true }); }
     const b = await req.json().catch(() => ({}));
     if (u.pathname === '/post') {
@@ -143,6 +148,37 @@ async function refreshEvents(env) {
   return { ok: true, n: out.length };
 }
 
+const SIDO = { 11: '서울', 26: '부산', 27: '대구', 28: '인천', 29: '광주', 30: '대전', 31: '울산', 36: '세종', 41: '경기', 42: '강원', 51: '강원', 43: '충북', 44: '충남', 45: '전북', 52: '전북', 46: '전남', 47: '경북', 48: '경남', 50: '제주' };
+// Foreign visitors by district (KTO DataLab, mobile-network based). Data lags ~1 month, so find the latest available day first.
+async function refreshRank(env) {
+  if (!env.TOUR_KEY) return { ok: false, why: 'no TOUR_KEY' };
+  const base = 'https://apis.data.go.kr/B551011/DataLabService/locgoRegnVisitrDDList?serviceKey=' + encodeURIComponent(env.TOUR_KEY) + '&MobileOS=ETC&MobileApp=PinnedKorea&_type=json';
+  const fmt = (d) => d.toISOString().slice(0, 10).replace(/-/g, '');
+  const cnt = async (s, e, rows, page) => {
+    const r = await fetch(base + '&numOfRows=' + rows + '&pageNo=' + page + '&startYmd=' + s + '&endYmd=' + e);
+    if (!r.ok) throw new Error('http ' + r.status);
+    return (await r.json()).response.body;
+  };
+  const now = new Date(Date.now() + 9 * 3600e3);
+  let probe = null;
+  for (let k = 3; k <= 70 && !probe; k += 7) { const d = new Date(now.getTime() - k * 864e5); if ((await cnt(fmt(d), fmt(d), 1, 1)).totalCount > 0) probe = d; }
+  if (!probe) return { ok: false, why: 'no data' };
+  let last = probe;
+  for (let k = 1; k <= 6; k++) { const d = new Date(probe.getTime() + k * 864e5); if (d > now) break; if ((await cnt(fmt(d), fmt(d), 1, 1)).totalCount > 0) last = d; }
+  const first = new Date(last.getTime() - 13 * 864e5), tot = {};
+  for (let p = 1; p <= 20; p++) {
+    const b = await cnt(fmt(first), fmt(last), 1000, p), it = b.items && b.items.item;
+    if (!it) break;
+    for (const x of it) if (x.touDivCd === '3') { const o = (tot[x.signguCode] = tot[x.signguCode] || { n: x.signguNm, v: 0 }); o.v += parseFloat(x.touNum) || 0; }
+    if (p * 1000 >= b.totalCount) break;
+  }
+  const top = Object.entries(tot).sort((a, b) => b[1].v - a[1].v).slice(0, 12).map(([c, o]) => ({ c, n: (SIDO[c.slice(0, 2)] || '') + ' ' + o.n, v: Math.round(o.v / 14) }));
+  if (!top.length) return { ok: false, why: 'empty' };
+  const stub = env.BOARD.get(env.BOARD.idFromName('main'));
+  await stub.fetch('https://board/rank-set', { method: 'POST', body: JSON.stringify({ from: fmt(first), to: fmt(last), days: 14, top }) });
+  return { ok: true, to: fmt(last) };
+}
+
 export default {
   async fetch(req, env, ctx) {
     const url = new URL(req.url);
@@ -207,6 +243,12 @@ export default {
         return new Response(JSON.stringify({ time: keys, temperature_2m_max: keys.map((k) => day[k].mx), temperature_2m_min: keys.map((k) => day[k].mn), precipitation_sum: keys.map((k) => day[k].p), snowfall_sum: keys.map((k) => (day[k].sn ? 1 : 0)), src: 'MET Norway' }), { headers: { 'content-type': 'application/json', 'cache-control': 'public, max-age=1800' } });
       } catch (err) { return json({ error: 'fail' }, 502); }
     }
+    if (url.pathname === '/api/rank') {
+      const stub = env.BOARD.get(env.BOARD.idFromName('main'));
+      const r = await stub.fetch('https://board/rank');
+      if (r.ok) return r;
+      return env.ASSETS.fetch(new Request(url.origin + '/rank.json'));
+    }
     if (url.pathname === '/api/events') {
       const stub = env.BOARD.get(env.BOARD.idFromName('main'));
       const r = await stub.fetch('https://board/events');
@@ -214,7 +256,7 @@ export default {
       return env.ASSETS.fetch(new Request(url.origin + '/events.json'));
     }
     if (url.pathname === '/api/events-refresh' && req.method === 'POST' && env.REFRESH_TOKEN && req.headers.get('x-token') === env.REFRESH_TOKEN) {
-      return json(await refreshEvents(env));
+      return json({ events: await refreshEvents(env), rank: await refreshRank(env).catch((e) => ({ ok: false, why: String(e) })) });
     }
     if (url.pathname.startsWith('/api/board')) {
       const origin = req.headers.get('Origin');
@@ -236,5 +278,5 @@ export default {
     }
     return env.ASSETS.fetch(req);
   },
-  async scheduled(event, env, ctx) { ctx.waitUntil(refreshEvents(env)); },
+  async scheduled(event, env, ctx) { ctx.waitUntil(Promise.all([refreshEvents(env), refreshRank(env)])); },
 };
