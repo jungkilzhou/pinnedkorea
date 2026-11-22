@@ -64,6 +64,11 @@ export class Board extends DurableObject {
       posts.forEach((p) => { p.replies = rep.filter((r) => r.post_id === p.id); p.liked = mine.has(p.id); });
       return Response.json({ posts });
     }
+    if (u.pathname === '/events') {
+      const v = await this.ctx.storage.get('events');
+      return v ? new Response(v, { headers: { 'content-type': 'application/json; charset=utf-8', 'cache-control': 'public, max-age=1800' } }) : Response.json({ error: 'none' }, { status: 404 });
+    }
+    if (u.pathname === '/events-set') { await this.ctx.storage.put('events', await req.text()); return Response.json({ ok: true }); }
     const b = await req.json().catch(() => ({}));
     if (u.pathname === '/post') {
       const nick = clip(b.nick, 24) || 'Traveler', place = clip(b.place, 60), body = clip(b.text, 600);
@@ -109,6 +114,35 @@ export class Board extends DurableObject {
   }
 }
 
+const RC = { 11: 'seoul', 26: 'busan', 27: 'daegu', 28: 'incheon', 29: 'gwangju', 30: 'daejeon', 31: 'ulsan', 36: 'chungnam', 41: 'gyeonggi', 43: 'chungbuk', 44: 'chungnam', 46: 'jeonnam', 47: 'gyeongbuk', 48: 'gyeongnam', 50: 'jeju', 51: 'gangwon', 42: 'gangwon', 52: 'jeonbuk', 45: 'jeonbuk' };
+const RXY = { seoul: [37.56, 126.99], gyeonggi: [37.45, 127.45], incheon: [37.45, 126.55], gangwon: [37.75, 128.3], chungbuk: [36.75, 127.8], chungnam: [36.5, 126.85], daejeon: [36.35, 127.4], gyeongbuk: [36.55, 128.8], daegu: [35.87, 128.6], gyeongnam: [35.4, 128.2], busan: [35.14, 129.05], ulsan: [35.55, 129.3], jeonbuk: [35.75, 127.15], jeonnam: [34.95, 126.95], gwangju: [35.16, 126.85], jeju: [33.38, 126.55] };
+// Pull festivals from KTO TourAPI (EngService2) and keep them in the Board DO. Needs the TOUR_KEY secret.
+async function refreshEvents(env) {
+  if (!env.TOUR_KEY) return { ok: false, why: 'no TOUR_KEY' };
+  const d = new Date(Date.now() + 9 * 3600e3), ymd = (x) => x.toISOString().slice(0, 10).replace(/-/g, '');
+  const start = ymd(d), cut = ymd(new Date(d.getTime() + 400 * 864e5));
+  const out = [];
+  for (let p = 1; p <= 10; p++) {
+    const r = await fetch('https://apis.data.go.kr/B551011/EngService2/searchFestival2?serviceKey=' + encodeURIComponent(env.TOUR_KEY) + '&MobileOS=ETC&MobileApp=PinnedKorea&_type=json&numOfRows=100&pageNo=' + p + '&arrange=A&eventStartDate=' + start);
+    if (!r.ok) return { ok: false, why: 'http ' + r.status };
+    const j = await r.json(), bd = j.response && j.response.body, it = bd && bd.items && bd.items.item;
+    if (!it) break;
+    for (const x of it) {
+      const la = parseFloat(x.mapy), lo = parseFloat(x.mapx);
+      if (!(la > 0) || !(lo > 0) || x.eventenddate < start || x.eventstartdate > cut) continue;
+      let reg = RC[String(x.lDongRegnCd || '')];
+      if (!reg) reg = Object.keys(RXY).sort((a, b) => ((RXY[a][0] - la) ** 2 + (RXY[a][1] - lo) ** 2) - ((RXY[b][0] - la) ** 2 + (RXY[b][1] - lo) ** 2))[0];
+      out.push({ id: x.contentid, t: String(x.title || '').trim(), s: x.eventstartdate, e: x.eventenddate, r: reg, la: +la.toFixed(4), lo: +lo.toFixed(4), a: String(x.addr1 || '').trim(), i: String(x.firstimage || '').replace('http://', 'https://') });
+    }
+    if (p * 100 >= bd.totalCount) break;
+  }
+  if (!out.length) return { ok: false, why: 'empty' };
+  out.sort((a, b) => (a.s + a.t).localeCompare(b.s + b.t));
+  const stub = env.BOARD.get(env.BOARD.idFromName('main'));
+  await stub.fetch('https://board/events-set', { method: 'POST', body: JSON.stringify({ upd: d.toISOString().slice(0, 10), ev: out }) });
+  return { ok: true, n: out.length };
+}
+
 export default {
   async fetch(req, env, ctx) {
     const url = new URL(req.url);
@@ -146,6 +180,15 @@ export default {
         return json({ error: 'translate failed' }, 502);
       }
     }
+    if (url.pathname === '/api/events') {
+      const stub = env.BOARD.get(env.BOARD.idFromName('main'));
+      const r = await stub.fetch('https://board/events');
+      if (r.ok) return r;
+      return env.ASSETS.fetch(new Request(url.origin + '/events.json'));
+    }
+    if (url.pathname === '/api/events-refresh' && req.method === 'POST' && env.REFRESH_TOKEN && req.headers.get('x-token') === env.REFRESH_TOKEN) {
+      return json(await refreshEvents(env));
+    }
     if (url.pathname.startsWith('/api/board')) {
       const origin = req.headers.get('Origin');
       if (req.method !== 'GET') {
@@ -166,4 +209,5 @@ export default {
     }
     return env.ASSETS.fetch(req);
   },
+  async scheduled(event, env, ctx) { ctx.waitUntil(refreshEvents(env)); },
 };
