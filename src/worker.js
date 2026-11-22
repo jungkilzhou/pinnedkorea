@@ -45,13 +45,13 @@ async function localize(env, ctx, items, lang) {
         ],
         max_tokens: 1200, temperature: 0.1,
       });
-      const txt = String((r && (r.response || (r.result && r.result.response))) || '');
+      const txt = String((r && (r.response || (r.result && r.result.response))) || ''); items.dbg = 'raw:' + txt.slice(0, 200);
       const m = txt.match(/\[[\s\S]*\]/);
       arr = m ? JSON.parse(m[0]) : null;
       if (Array.isArray(arr) && arr.length === items.length) ctx.waitUntil(caches.default.put(key, new Response(JSON.stringify(arr), { headers: { 'cache-control': 'public, max-age=2592000' } })));
     }
     if (Array.isArray(arr) && arr.length === items.length) items.forEach((d, i) => { const x = arr[i] || {}; if (x.n && String(x.n).length < 80) d.n = String(x.n); if (x.a && String(x.a).length < 160) d.a = String(x.a); });
-  } catch (e) { /* keep romanized */ }
+  } catch (e) { items.dbg = String(e && e.message || e).slice(0, 200); }
   return items;
 }
 
@@ -293,7 +293,7 @@ export default {
         const j = await r.json();
         const items = (j.documents || []).filter((d) => k !== 'wc' || /화장실/.test(d.place_name + ' ' + d.category_name)).slice(0, k === 'wc' ? 10 : 8).map((d) => ({ id: d.id, n: d.place_name, x: +d.x, y: +d.y, a: d.road_address_name || d.address_name || '', m: +d.distance || 0 }));
         await localize(env, ctx, items, lg);
-        return new Response(JSON.stringify({ ok: true, items }), { headers: { 'content-type': 'application/json', 'cache-control': 'public, max-age=600' } });
+        return new Response(JSON.stringify({ ok: true, items, dbg: items.dbg }), { headers: { 'content-type': 'application/json', 'cache-control': 'public, max-age=600' } });
       } catch (err) { return json({ ok: false, reason: 'fail' }, 502); }
     }
     if (url.pathname === '/api/weather') {
