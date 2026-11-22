@@ -1,7 +1,7 @@
 // PINNED KOREA — static site + /api/translate (Workers AI) + /api/board (Durable Object, SQLite)
 import { DurableObject } from 'cloudflare:workers';
-const CODES = { en: 'en', ko: 'ko', ja: 'ja', zh: 'zh', tw: 'tw', es: 'es' };
-const NAMES = { en: 'English', ko: 'Korean', ja: 'Japanese', zh: 'Simplified Chinese', tw: 'Traditional Chinese (Taiwan)', es: 'Spanish' };
+const CODES = { en: 'en', ko: 'ko', ja: 'ja', zh: 'zh', tw: 'tw', es: 'es', vi: 'vi' };
+const NAMES = { en: 'English', ko: 'Korean', ja: 'Japanese', zh: 'Simplified Chinese', tw: 'Traditional Chinese (Taiwan)', es: 'Spanish', vi: 'Vietnamese' };
 const json = (o, status = 200) =>
   new Response(JSON.stringify(o), { status, headers: { 'content-type': 'application/json; charset=utf-8', 'cache-control': 'no-store' } });
 
@@ -40,7 +40,7 @@ async function localize(env, ctx, items, lang) {
       const src = items.map((d) => ({ n: d.o, a: d.a }));
       const r = await env.AI.run('@cf/meta/llama-3.3-70b-instruct-fp8-fast', {
         messages: [
-          { role: 'system', content: 'You localize Korean place names and addresses for a foreign tourist. Target language: ' + NAMES[lang] + '. For each item return its name (n) and address (a) written so the tourist can read and say it: brand names in their international form (CU, GS25, 7-Eleven, emart24), station names as "<Name> Station Line N" in the target language, other names transliterated by sound (Japanese in katakana, Chinese in common Chinese usage, English/Spanish in Revised Romanization) with common words translated (e.g. restroom, police box). Keep numbers exact. Output ONLY a JSON array with the same length and order: [{"n":"...","a":"..."}].' },
+          { role: 'system', content: 'You localize Korean place names and addresses for a foreign tourist. Target language: ' + NAMES[lang] + '. For each item return its name (n) and address (a) written so the tourist can read and say it: brand names in their international form (CU, GS25, 7-Eleven, emart24), station names as "<Name> Station Line N" in the target language, other names transliterated by sound (Japanese in katakana, Chinese in common Chinese usage, Vietnamese in natural Vietnamese with diacritics, English/Spanish in Revised Romanization) with common words translated (e.g. restroom, police box). Keep numbers exact. Output ONLY a JSON array with the same length and order: [{"n":"...","a":"..."}].' },
           { role: 'user', content: JSON.stringify(src) },
         ],
         max_tokens: 1200, temperature: 0.1,
