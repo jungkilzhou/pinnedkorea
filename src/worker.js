@@ -216,6 +216,36 @@ export default {
         return json({ error: 'translate failed' }, 502);
       }
     }
+    if (url.pathname === '/api/stores') {
+      const lat = parseFloat(url.searchParams.get('lat')), lon = parseFloat(url.searchParams.get('lon'));
+      if (!(lat > 32 && lat < 39) || !(lon > 124 && lon < 132)) return json({ error: 'bad' }, 400);
+      if (!env.KAKAO_KEY) return json({ ok: false, reason: 'nokey' });
+      try {
+        const out = [];
+        for (const pg of [1, 2]) {
+          const r = await fetch('https://dapi.kakao.com/v2/local/search/category.json?category_group_code=CS2&radius=1500&sort=distance&size=15&page=' + pg + '&x=' + lon.toFixed(5) + '&y=' + lat.toFixed(5), { headers: { Authorization: 'KakaoAK ' + env.KAKAO_KEY }, cf: { cacheTtl: 86400, cacheEverything: true } });
+          if (!r.ok) return json({ ok: false, reason: 'upstream' }, 502);
+          const j = await r.json();
+          for (const d of j.documents || []) out.push({ id: d.id, n: d.place_name, x: +d.x, y: +d.y, a: d.road_address_name || d.address_name || '', p: d.phone || '' });
+          if (!j.meta || j.meta.is_end) break;
+        }
+        return new Response(JSON.stringify({ ok: true, items: out }), { headers: { 'content-type': 'application/json', 'cache-control': 'public, max-age=86400' } });
+      } catch (err) { return json({ ok: false, reason: 'fail' }, 502); }
+    }
+    if (url.pathname === '/api/near') {
+      const lat = parseFloat(url.searchParams.get('lat')), lon = parseFloat(url.searchParams.get('lon')), k = url.searchParams.get('k') || '';
+      const Q = { cs: ['c', 'CS2'], subway: ['c', 'SW8'], wc: ['k', '공중화장실'], taxi: ['k', '택시승강장'], bus: ['k', '버스정류장'] }[k];
+      if (!Q || !(lat > 32 && lat < 39) || !(lon > 124 && lon < 132)) return json({ error: 'bad' }, 400);
+      if (!env.KAKAO_KEY) return json({ ok: false, reason: 'nokey' });
+      try {
+        const base = Q[0] === 'c' ? 'https://dapi.kakao.com/v2/local/search/category.json?category_group_code=' + Q[1] : 'https://dapi.kakao.com/v2/local/search/keyword.json?query=' + encodeURIComponent(Q[1]);
+        const r = await fetch(base + '&radius=1500&sort=distance&size=8&x=' + lon.toFixed(4) + '&y=' + lat.toFixed(4), { headers: { Authorization: 'KakaoAK ' + env.KAKAO_KEY }, cf: { cacheTtl: 3600, cacheEverything: true } });
+        if (!r.ok) return json({ ok: false, reason: 'upstream' }, 502);
+        const j = await r.json();
+        const items = (j.documents || []).map((d) => ({ id: d.id, n: d.place_name, x: +d.x, y: +d.y, a: d.road_address_name || d.address_name || '', m: +d.distance || 0 }));
+        return new Response(JSON.stringify({ ok: true, items }), { headers: { 'content-type': 'application/json', 'cache-control': 'public, max-age=600' } });
+      } catch (err) { return json({ ok: false, reason: 'fail' }, 502); }
+    }
     if (url.pathname === '/api/weather') {
       const f = (k) => parseFloat(url.searchParams.get(k));
       const lat = f('lat'), lon = f('lon'), s = url.searchParams.get('s') || '', e = url.searchParams.get('e') || '';
