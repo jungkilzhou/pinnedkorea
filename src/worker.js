@@ -292,7 +292,7 @@ export default {
         const r = await fetch(base + '&radius=' + (k === 'subway' || k === 'taxi' ? 3000 : 1500) + '&sort=distance&size=15&x=' + lon.toFixed(4) + '&y=' + lat.toFixed(4), { headers: { Authorization: 'KakaoAK ' + env.KAKAO_KEY }, cf: { cacheTtl: 3600, cacheEverything: true } });
         if (!r.ok) return json({ ok: false, reason: 'upstream' }, 502);
         const j = await r.json();
-        const items = (j.documents || []).filter((d) => k !== 'wc' || /화장실/.test(d.place_name + ' ' + d.category_name)).slice(0, k === 'wc' ? 10 : 8).map((d) => ({ id: d.id, n: d.place_name, x: +d.x, y: +d.y, a: d.road_address_name || d.address_name || '', m: +d.distance || 0 }));
+        const items = (j.documents || []).filter((d) => k !== 'wc' || /화장실/.test(d.place_name + ' ' + d.category_name)).slice(0, k === 'wc' ? 10 : 8).map((d) => ({ id: d.id, n: d.place_name, x: +d.x, y: +d.y, a: d.road_address_name || d.address_name || '', m: +d.distance || 0, p: d.phone || '' }));
         await localize(env, ctx, items, lg);
         return new Response(JSON.stringify({ ok: true, items }), { headers: { 'content-type': 'application/json', 'cache-control': 'public, max-age=600' } });
       } catch (err) { return json({ ok: false, reason: 'fail' }, 502); }
