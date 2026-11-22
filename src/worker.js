@@ -6,6 +6,55 @@ const json = (o, status = 200) =>
   new Response(JSON.stringify(o), { status, headers: { 'content-type': 'application/json; charset=utf-8', 'cache-control': 'no-store' } });
 
 
+
+// ---- Korean place-name localisation (Revised Romanization fallback + Workers AI) ----
+const RL = 'g kk n d tt r m b pp s ss  j jj ch k t p h'.split(' ');
+const RV = 'a ae ya yae eo e yeo ye o wa wae oe yo u wo we wi yu eu ui i'.split(' ');
+const RT = ['', 'k', 'k', 'k', 'n', 'n', 'n', 't', 'l', 'k', 'm', 'p', 'l', 'l', 'p', 'l', 'm', 'p', 'p', 't', 't', 'ng', 't', 't', 'k', 't', 'p', 't'];
+const BRAND = [[/세븐일레븐/g, '7-Eleven'], [/이마트24/g, 'emart24'], [/미니스톱/g, 'Ministop'], [/씨유|CU/g, 'CU'], [/지에스25|GS25/g, 'GS25']];
+function romanize(t) {
+  let o = t;
+  const keep = [];
+  BRAND.forEach(([re, v], i) => { o = o.replace(re, () => { keep.push(v); return '\u0001' + (keep.length - 1) + '\u0002'; }); });
+  o = o.replace(/지하/g, 'B').replace(/(\d)호선/g, 'Line $1').replace(/([가-힣]+)역/g, '$1 Stn.');
+  let r = '';
+  for (const ch of o) {
+    const c = ch.charCodeAt(0);
+    if (c >= 0xac00 && c <= 0xd7a3) {
+      const n = c - 0xac00, f = n % 28, v = ((n - f) / 28) % 21, l = Math.floor(n / 588);
+      r += RL[l] + RV[v] + RT[f];
+    } else r += ch;
+  }
+  r = r.replace(/\u0001(\d+)\u0002/g, (m, i) => ' ' + keep[+i] + ' ').replace(/\s+/g, ' ').trim();
+  return r.replace(/(^|[\s(])([a-z])/g, (m, a, b) => a + b.toUpperCase());
+}
+async function localize(env, ctx, items, lang) {
+  if (lang === 'ko' || !NAMES[lang]) return items;
+  items.forEach((d) => { d.o = d.n; d.n = romanize(d.n); d.a = romanize(d.a); });
+  if (!env.AI) return items;
+  try {
+    const key = new Request('https://pk-cache.local/loc/' + lang + '/' + (await sha(items.map((d) => d.o + '|' + d.a).join('\n'))));
+    const hit = await caches.default.match(key);
+    let arr = hit ? await hit.json() : null;
+    if (!arr) {
+      const src = items.map((d) => ({ n: d.o, a: d.a }));
+      const r = await env.AI.run('@cf/meta/llama-3.3-70b-instruct-fp8-fast', {
+        messages: [
+          { role: 'system', content: 'You localize Korean place names and addresses for a foreign tourist. Target language: ' + NAMES[lang] + '. For each item return its name (n) and address (a) written so the tourist can read and say it: brand names in their international form (CU, GS25, 7-Eleven, emart24), station names as "<Name> Station Line N" in the target language, other names transliterated by sound (Japanese in katakana, Chinese in common Chinese usage, English/Spanish in Revised Romanization) with common words translated (e.g. restroom, police box). Keep numbers exact. Output ONLY a JSON array with the same length and order: [{"n":"...","a":"..."}].' },
+          { role: 'user', content: JSON.stringify(src) },
+        ],
+        max_tokens: 1200, temperature: 0.1,
+      });
+      const txt = String((r && (r.response || (r.result && r.result.response))) || '');
+      const m = txt.match(/\[[\s\S]*\]/);
+      arr = m ? JSON.parse(m[0]) : null;
+      if (Array.isArray(arr) && arr.length === items.length) ctx.waitUntil(caches.default.put(key, new Response(JSON.stringify(arr), { headers: { 'cache-control': 'public, max-age=2592000' } })));
+    }
+    if (Array.isArray(arr) && arr.length === items.length) items.forEach((d, i) => { const x = arr[i] || {}; if (x.n && String(x.n).length < 80) d.n = String(x.n); if (x.a && String(x.a).length < 160) d.a = String(x.a); });
+  } catch (e) { /* keep romanized */ }
+  return items;
+}
+
 const clip = (v, n) => String(v == null ? '' : v).replace(/[\u0000-\u0008\u000b\u000c\u000e-\u001f]/g, '').trim().slice(0, n);
 const hasLink = (t) => /(https?:\/\/|www\.|\.(com|net|org|kr|io|co)\b)/i.test(t);
 async function sha(t) {
@@ -226,23 +275,24 @@ export default {
           const r = await fetch('https://dapi.kakao.com/v2/local/search/category.json?category_group_code=CS2&radius=1500&sort=distance&size=15&page=' + pg + '&x=' + lon.toFixed(5) + '&y=' + lat.toFixed(5), { headers: { Authorization: 'KakaoAK ' + env.KAKAO_KEY }, cf: { cacheTtl: 86400, cacheEverything: true } });
           if (!r.ok) return json({ ok: false, reason: 'upstream' }, 502);
           const j = await r.json();
-          for (const d of j.documents || []) out.push({ id: d.id, n: d.place_name, x: +d.x, y: +d.y, a: d.road_address_name || d.address_name || '', p: d.phone || '' });
+          for (const d of j.documents || []) out.push({ id: d.id, n: d.place_name, x: +d.x, y: +d.y, a: d.road_address_name || d.address_name || '', p: d.phone || '', e: romanize(d.place_name) });
           if (!j.meta || j.meta.is_end) break;
         }
         return new Response(JSON.stringify({ ok: true, items: out }), { headers: { 'content-type': 'application/json', 'cache-control': 'public, max-age=86400' } });
       } catch (err) { return json({ ok: false, reason: 'fail' }, 502); }
     }
     if (url.pathname === '/api/near') {
-      const lat = parseFloat(url.searchParams.get('lat')), lon = parseFloat(url.searchParams.get('lon')), k = url.searchParams.get('k') || '';
+      const lat = parseFloat(url.searchParams.get('lat')), lon = parseFloat(url.searchParams.get('lon')), k = url.searchParams.get('k') || '', lg = url.searchParams.get('l') || 'ko';
       const Q = { cs: ['c', 'CS2'], subway: ['c', 'SW8'], wc: ['k', '화장실'], taxi: ['k', '택시승강장'], bus: ['k', '버스정류장'] }[k];
       if (!Q || !(lat > 32 && lat < 39) || !(lon > 124 && lon < 132)) return json({ error: 'bad' }, 400);
       if (!env.KAKAO_KEY) return json({ ok: false, reason: 'nokey' });
       try {
         const base = Q[0] === 'c' ? 'https://dapi.kakao.com/v2/local/search/category.json?category_group_code=' + Q[1] : 'https://dapi.kakao.com/v2/local/search/keyword.json?query=' + encodeURIComponent(Q[1]);
-        const r = await fetch(base + '&radius=1500&sort=distance&size=15&x=' + lon.toFixed(4) + '&y=' + lat.toFixed(4), { headers: { Authorization: 'KakaoAK ' + env.KAKAO_KEY }, cf: { cacheTtl: 3600, cacheEverything: true } });
+        const r = await fetch(base + '&radius=' + (k === 'subway' || k === 'taxi' ? 3000 : 1500) + '&sort=distance&size=15&x=' + lon.toFixed(4) + '&y=' + lat.toFixed(4), { headers: { Authorization: 'KakaoAK ' + env.KAKAO_KEY }, cf: { cacheTtl: 3600, cacheEverything: true } });
         if (!r.ok) return json({ ok: false, reason: 'upstream' }, 502);
         const j = await r.json();
-        const items = (j.documents || []).filter((d) => k !== 'wc' || /화장실/.test(d.place_name + ' ' + d.category_name)).slice(0, 10).map((d) => ({ id: d.id, n: d.place_name, x: +d.x, y: +d.y, a: d.road_address_name || d.address_name || '', m: +d.distance || 0 }));
+        const items = (j.documents || []).filter((d) => k !== 'wc' || /화장실/.test(d.place_name + ' ' + d.category_name)).slice(0, k === 'wc' ? 10 : 8).map((d) => ({ id: d.id, n: d.place_name, x: +d.x, y: +d.y, a: d.road_address_name || d.address_name || '', m: +d.distance || 0 }));
+        await localize(env, ctx, items, lg);
         return new Response(JSON.stringify({ ok: true, items }), { headers: { 'content-type': 'application/json', 'cache-control': 'public, max-age=600' } });
       } catch (err) { return json({ ok: false, reason: 'fail' }, 502); }
     }
