@@ -284,7 +284,7 @@ export default {
     }
     if (url.pathname === '/api/near') {
       const lat = parseFloat(url.searchParams.get('lat')), lon = parseFloat(url.searchParams.get('lon')), k = url.searchParams.get('k') || '', lg = url.searchParams.get('l') || 'ko';
-      const Q = { cs: ['c', 'CS2'], subway: ['c', 'SW8'], wc: ['k', '화장실'], taxi: ['k', '택시승강장'], bus: ['k', '버스정류장'] }[k];
+      const Q = { cs: ['c', 'CS2'], subway: ['c', 'SW8'], cafe: ['c', 'CE7'], wc: ['k', '화장실'], taxi: ['k', '택시승강장'], bus: ['k', '버스정류장'] }[k];
       if (!Q || !(lat > 32 && lat < 39) || !(lon > 124 && lon < 132)) return json({ error: 'bad' }, 400);
       if (!env.KAKAO_KEY) return json({ ok: false, reason: 'nokey' });
       try {
