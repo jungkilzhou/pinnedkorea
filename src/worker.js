@@ -185,11 +185,26 @@ export default {
       const lat = f('lat'), lon = f('lon'), s = url.searchParams.get('s') || '', e = url.searchParams.get('e') || '';
       if (!(lat > 32 && lat < 39) || !(lon > 124 && lon < 132) || !/^\d{4}-\d\d-\d\d$/.test(s) || !/^\d{4}-\d\d-\d\d$/.test(e)) return json({ error: 'bad' }, 400);
       try {
-        const r = await fetch('https://api.open-meteo.com/v1/forecast?latitude=' + lat.toFixed(2) + '&longitude=' + lon.toFixed(2) + '&daily=temperature_2m_max,temperature_2m_min,precipitation_sum,snowfall_sum&timezone=Asia%2FSeoul&start_date=' + s + '&end_date=' + e, { cf: { cacheTtl: 3600, cacheEverything: true } });
+        const r = await fetch('https://api.met.no/weatherapi/locationforecast/2.0/compact?lat=' + lat.toFixed(2) + '&lon=' + lon.toFixed(2), { headers: { 'user-agent': 'PinnedKorea/1.0 (+https://pinnedkorea.autoboxtv.workers.dev)' }, cf: { cacheTtl: 3600, cacheEverything: true } });
         if (!r.ok) return json({ error: 'upstream' }, 502);
         const j = await r.json();
-        if (!j.daily) return json({ error: 'none' }, 502);
-        return new Response(JSON.stringify(j.daily), { headers: { 'content-type': 'application/json', 'cache-control': 'public, max-age=1800' } });
+        const ts = (j.properties && j.properties.timeseries) || [];
+        const day = {};
+        for (const t of ts) {
+          const d = new Date(new Date(t.time).getTime() + 9 * 3600e3), key = d.toISOString().slice(0, 10);
+          if (key < s || key > e) continue;
+          const o = (day[key] = day[key] || { mx: -99, mn: 99, p: 0, sn: 0 });
+          const T = t.data.instant.details.air_temperature;
+          if (T > o.mx) o.mx = T; if (T < o.mn) o.mn = T;
+          const n6 = t.data.next_6_hours;
+          if (n6 && new Date(t.time).getUTCHours() % 6 === 0) {
+            o.p += (n6.details && n6.details.precipitation_amount) || 0;
+            if (/snow|sleet/.test(n6.summary.symbol_code || '')) o.sn += 1;
+          }
+        }
+        const keys = Object.keys(day).sort();
+        if (!keys.length) return json({ error: 'range' }, 502);
+        return new Response(JSON.stringify({ time: keys, temperature_2m_max: keys.map((k) => day[k].mx), temperature_2m_min: keys.map((k) => day[k].mn), precipitation_sum: keys.map((k) => day[k].p), snowfall_sum: keys.map((k) => (day[k].sn ? 1 : 0)), src: 'MET Norway' }), { headers: { 'content-type': 'application/json', 'cache-control': 'public, max-age=1800' } });
       } catch (err) { return json({ error: 'fail' }, 502); }
     }
     if (url.pathname === '/api/events') {

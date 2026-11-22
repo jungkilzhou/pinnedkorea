@@ -1,5 +1,5 @@
 {
-"upd": "2026-11-22T14:50:00+09:00",
+"upd": "2026-11-22T15:10:00+09:00",
 "ev": [
 {
 "id": "c1",
@@ -86,7 +86,7 @@
 {
 "id": "c5",
 "k": "award",
-"t": "2026 SBS 가요대전",
+"t": "2026 SBS 가요대전 (30주년)",
 "s": "20261224",
 "e": "20261225",
 "r": "gyeonggi",
@@ -98,9 +98,9 @@
 "가요대전"
 ],
 "who": "Year-end music festival",
-"src": "https://gayo.sbs.co.kr",
-"st": "SBS (reported)",
-"te": "2026 SBS Gayo Daejeon",
+"src": "https://ent.sbs.co.kr/news/article.do?article_id=E10010322730",
+"st": "SBS 공식",
+"te": "2026 SBS Gayo Daejeon (30th)",
 "ve": "KINTEX, Ilsan"
 },
 {
@@ -219,6 +219,25 @@
 "st": "혜택창고 (추정)",
 "te": "Olive Young Day (Dec)",
 "ve": "Olive Young stores · usually 25th–27th"
+},
+{
+"id": "c12",
+"k": "kpop",
+"t": "지드래곤 앵콜 콘서트",
+"te": "G-DRAGON Encore Concert",
+"s": "20261212",
+"e": "20261214",
+"r": "seoul",
+"la": 37.4982,
+"lo": 126.8671,
+"v": "고척스카이돔",
+"ve": "Gocheok Sky Dome",
+"tags": [
+"GDRAGON",
+"지드래곤콘서트"
+],
+"src": "https://www.koreaherald.com/article/10611650",
+"st": "Korea Herald"
 }
 ]
 }
