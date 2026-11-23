@@ -290,21 +290,23 @@ export default {
       if (!text || !from || !to) return json({ error: 'bad request' }, 400);
       if (from === to) return json({ text });
       try {
-        let out = '';
-        try {
-          const r = await env.AI.run('@cf/meta/llama-3.3-70b-instruct-fp8-fast', {
-            messages: [
-              { role: 'system', content: 'You are a professional live interpreter helping a traveler in Korea. Translate the user message from ' + NAMES[from] + ' to ' + NAMES[to] + '. Use natural, polite, spoken language that a native speaker would actually say. Keep names, numbers and addresses exact. Output ONLY the translation, with no quotes, notes or explanations.' },
-              { role: 'user', content: text },
-            ],
-            max_tokens: 300,
-            temperature: 0.2,
-          });
-          out = String((r && (r.response || (r.result && r.result.response))) || '').trim();
-        } catch (e) { out = ''; }
-        // guard: Korean/Japanese/Spanish/Vietnamese/English output must not leak Chinese characters (or Hangul in non-Korean output)
-        if (out && ((to === 'ko' || to === 'es' || to === 'vi' || to === 'en') && /[\u4e00-\u9fff]/.test(out))) out = '';
-        if (out && to !== 'ko' && from === 'ko' && /[\uac00-\ud7a3]/.test(out)) out = '';
+        const bad = (o) => !o || ((to === 'ko' || to === 'es' || to === 'vi' || to === 'en') && /[\u4e00-\u9fff]/.test(o)) || (from === 'ko' && to !== 'ko' && /[\uac00-\ud7a3]/.test(o));
+        const ask = async (strict) => {
+          try {
+            const r = await env.AI.run('@cf/meta/llama-3.3-70b-instruct-fp8-fast', {
+              messages: [
+                { role: 'system', content: 'You are a professional live interpreter helping a traveler in Korea. Translate the user message from ' + NAMES[from] + ' to ' + NAMES[to] + '. Use natural, polite, spoken language that a native speaker would actually say. Keep names, numbers and addresses exact. Output ONLY the translation, with no quotes, notes or explanations.' + (strict ? ' The output must be written entirely in ' + NAMES[to] + ' using its own script only; never include Chinese characters or words from other languages.' : '') },
+                { role: 'user', content: text },
+              ],
+              max_tokens: 300,
+              temperature: strict ? 0 : 0.2,
+            });
+            return String((r && (r.response || (r.result && r.result.response))) || '').trim();
+          } catch (e) { return ''; }
+        };
+        let out = await ask(false);
+        if (bad(out)) out = await ask(true);
+        if (bad(out)) out = '';
         if (!out) {
           const m = (c) => (c === 'tw' ? 'zh' : c);
           const r2 = await env.AI.run('@cf/meta/m2m100-1.2b', { text, source_lang: m(from), target_lang: m(to) });
