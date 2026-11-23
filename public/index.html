@@ -941,6 +941,10 @@ var S={
  ipPh:['여기에 입력','Type here','ここに入力','在此输入','在此輸入','Escribe aquí','Nhập tại đây'],
  ipSend:['번역','Translate','翻訳','翻译','翻譯','Traducir','Dịch'],
  ipMyLang:['내 언어','My language','自分の言語','我的语言','我的語言','Mi idioma','Ngôn ngữ của tôi'],
+ ipNone:['목소리를 못 들었어요. 다시 말해 주세요.','Couldn’t hear anything. Please try again.','聞き取れませんでした。もう一度お願いします。','没听到声音，请再说一次。','沒聽到聲音，請再說一次。','No se oyó nada. Inténtalo de nuevo.','Không nghe thấy gì. Vui lòng thử lại.'],
+ ipThink:['인식하는 중…','Recognizing…','認識中…','识别中…','辨識中…','Reconociendo…','Đang nhận dạng…'],
+ ipHear:['듣는 중… 말이 끝나면 자동으로 보내요 (다시 누르면 바로 전송)','Listening… it sends when you stop talking (tap again to send now)','聞いています… 話し終えると自動で送信（もう一度押すと即送信）','正在听… 说完会自动发送（再点一次立即发送）','正在聽… 說完會自動送出（再點一次立即送出）','Escuchando… se envía al terminar (toca de nuevo para enviar ya)','Đang nghe… tự gửi khi bạn nói xong (chạm lại để gửi ngay)'],
+ ipWait:['마이크 준비 중…','Getting the mic ready…','マイクを準備中…','正在准备麦克风…','正在準備麥克風…','Preparando el micrófono…','Đang chuẩn bị micro…'],
  ipFlip:['마주 보기','Face to face','向かい合わせ','面对面','面對面','Cara a cara','Đối diện'],
  ipSpeak:['눌러서 말하기','Tap to speak','押して話す','点按说话','點按說話','Toca para hablar','Chạm để nói'],
  ipOthT:['상대방','Other person','相手','对方','對方','Otra persona','Người đối diện'],
@@ -2126,7 +2130,7 @@ function speak(text,bcp){try{if(!('speechSynthesis' in window)||typeof SpeechSyn
  var u=new SpeechSynthesisUtterance(text);u.lang=bcp;var vs=window.speechSynthesis.getVoices()||[];
  var v=vs.filter(function(x){return x.lang&&x.lang.replace('_','-')===bcp;})[0]||vs.filter(function(x){return x.lang&&x.lang.slice(0,2)===bcp.slice(0,2);})[0];if(v)u.voice=v;
  window.speechSynthesis.cancel();window.speechSynthesis.speak(u);}catch(e){toast(pk2(S.noSpeech));}}
-function translate(text,from,to){return fetch('/api/translate',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({text:text,from:from,to:to})}).then(function(r){return r.json().then(function(j){if(!r.ok||!j.text)throw new Error(j.error||'fail');return j.text;});});}
+function translate(text,from,to,o){return fetch('/api/translate',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({text:text,from:from,to:to,sp:o&&o.sp?1:0,ctx:o&&o.ctx||undefined})}).then(function(r){return r.json().then(function(j){if(!r.ok||!j.text)throw new Error(j.error||'fail');return j.text;});});}
 function renderLog(){var el=$('#ilog');
  if(!ilog.length){el.innerHTML='<p class="iempty">'+esc(t('ipEmpty'))+'</p>';return;}
  var h='';ilog.forEach(function(m,i){
@@ -2135,16 +2139,18 @@ function renderLog(){var el=$('#ilog');
   h+='</div>';});
  el.innerHTML=h;el.scrollTop=el.scrollHeight;}
 function sideL(s){return s==='M'?myL:othL;}
-function addMsg(side,text){
+function addMsg(side,text,sp){
  var from=sideL(side),to=sideL(side==='M'?'O':'M');
+ var cx=ilog.filter(function(m){return !m.err&&!m.busy;}).slice(-4).map(function(m){return {f:m.from,t:m.src};});
  var m={dir:side==='M'?'m':'o',from:from,to:to,src:text,out:null,busy:true,err:false};ilog.push(m);if(ilog.length>40)ilog.shift();renderLog();
- translate(text,IL(from)[3],IL(to)[3]).then(function(o){m.out=o;m.busy=false;renderLog();if($('#iauto').checked)speak(o,IL(to)[2]);})
+ translate(text,IL(from)[3],IL(to)[3],{sp:sp,ctx:cx}).then(function(o){m.out=o;m.busy=false;renderLog();if($('#iauto').checked)speak(o,IL(to)[2]);})
  .catch(function(){m.busy=false;m.err=true;renderLog();});
 }
 function setMic(side){$('#micM').classList.toggle('rec',side==='M');$('#micO').classList.toggle('rec',side==='O');}
 var recT=0,recMax=0;
-function stopMic(){clearTimeout(recT);clearTimeout(recMax);if(rec){var r=rec;rec=null;r.onresult=r.onerror=r.onend=null;try{r.abort();}catch(e){}}recSide=null;setMic(null);$('#ilive').textContent='';}
-function listen(side){
+var mrec=null;
+function stopMic(){if(mrec){mrec.cancel=true;try{mrec.stop();}catch(e){}mrec=null;}clearTimeout(recT);clearTimeout(recMax);if(rec){var r=rec;rec=null;r.onresult=r.onerror=r.onend=null;try{r.abort();}catch(e){}}recSide=null;setMic(null);$('#ilive').textContent='';}
+function listenSR(side){
  var SR=window.SpeechRecognition||window.webkitSpeechRecognition;
  if(!SR){toast(pk2(S.noMic));$('#iin'+side).focus();return;}
  if(rec){var cur=rec,same=recSide===side;try{cur.stop();}catch(e){stopMic();}if(same)return;stopMic();}
@@ -2156,6 +2162,39 @@ function listen(side){
  r.onerror=function(e){if(e.error==='not-allowed'||e.error==='service-not-allowed')toast(pk2(S.micDenied));};
  r.onend=function(){clearTimeout(recT);clearTimeout(recMax);var had=fin.trim();rec=null;recSide=null;setMic(null);live.textContent='';if(had)addMsg(side,had);};
  try{r.start();setMic(side);live.textContent='…';recMax=setTimeout(function(){try{r.stop();}catch(x){stopMic();}},12000);}catch(e){stopMic();}
+}
+function canRec(){return !!(navigator.mediaDevices&&navigator.mediaDevices.getUserMedia&&window.MediaRecorder);}
+/* records the voice, auto-stops on silence, and sends it to Whisper (/api/stt) for punctuation + better pronunciation handling */
+function listen(side){
+ if(!canRec())return listenSR(side);
+ if(mrec){var same=mrec.side===side;if(same&&mrec.go){mrec.fin=true;try{mrec.stop();}catch(e){}return;}stopMic();if(same)return;}
+ try{window.speechSynthesis.cancel();}catch(e){}
+ var live=$('#ilive'),st={side:side,go:false,fin:false,cancel:false,stop:null};mrec=st;setMic(side);live.textContent=pk2(S.ipWait);
+ navigator.mediaDevices.getUserMedia({audio:{echoCancellation:true,noiseSuppression:true,autoGainControl:true}}).then(function(stream){
+  if(mrec!==st){stream.getTracks().forEach(function(t){t.stop();});return;}
+  var mt=['audio/webm;codecs=opus','audio/webm','audio/mp4'].filter(function(x){return MediaRecorder.isTypeSupported(x);})[0]||'';
+  var mr;try{mr=new MediaRecorder(stream,mt?{mimeType:mt}:{});}catch(e){stream.getTracks().forEach(function(t){t.stop();});stopMic();return listenSR(side);}
+  var ch=[],ac=null,an=null,buf=null,tm=0,t0=Date.now(),heard=0,lastV=0,floor=0,n=0;
+  st.stop=function(){try{if(mr.state!=='inactive')mr.stop();}catch(e){}};
+  try{var AC=window.AudioContext||window.webkitAudioContext;ac=new AC();var src=ac.createMediaStreamSource(stream);an=ac.createAnalyser();an.fftSize=1024;src.connect(an);buf=new Uint8Array(an.fftSize);}catch(e){}
+  mr.ondataavailable=function(e){if(e.data&&e.data.size)ch.push(e.data);};
+  mr.onstop=function(){clearInterval(tm);stream.getTracks().forEach(function(t){t.stop();});try{ac&&ac.close();}catch(e){}
+   if(mrec===st)mrec=null;setMic(null);
+   if(st.cancel||!ch.length){if(!st.cancel)live.textContent='';return;}
+   var blob=new Blob(ch,{type:mr.mimeType||mt||'audio/webm'});
+   if(!heard||blob.size<1500){live.textContent='';toast(pk2(S.ipNone));return;}
+   live.textContent=pk2(S.ipThink);
+   fetch('/api/stt?lang='+IL(sideL(side))[3],{method:'POST',headers:{'content-type':blob.type||'audio/webm'},body:blob}).then(function(r){return r.json().then(function(j){if(!r.ok)throw new Error(j.error||'fail');return j.text||'';});})
+   .then(function(tx){live.textContent='';tx=String(tx).trim();if(!tx||/^[.\s…,?!。、]+$/.test(tx)){toast(pk2(S.ipNone));return;}addMsg(side,tx,true);})
+   .catch(function(){live.textContent='';toast(pk2(S.trFail));});};
+  mr.start(250);st.go=true;live.textContent=pk2(S.ipHear);
+  tm=setInterval(function(){var now=Date.now();if(now-t0>15000){st.fin=true;st.stop();return;}
+   if(!an)return;an.getByteTimeDomainData(buf);var sum=0;for(var i=0;i<buf.length;i++){var v=(buf[i]-128)/128;sum+=v*v;}var rms=Math.sqrt(sum/buf.length);
+   if(n<4){floor=Math.max(floor,rms);n++;return;}var thr=Math.max(.02,floor*2.6);
+   if(rms>thr){heard=heard||now;lastV=now;}
+   if(heard&&now-lastV>1500){st.fin=true;st.stop();}
+   else if(!heard&&now-t0>7000){st.cancel=true;st.stop();live.textContent='';toast(pk2(S.ipNone));}},100);
+ }).catch(function(e){if(mrec===st)mrec=null;setMic(null);live.textContent='';toast(pk2(S.micDenied));});
 }
 document.addEventListener('visibilitychange',function(){if(document.hidden){stopMic();try{window.speechSynthesis.cancel();}catch(e){}}});
 window.addEventListener('pagehide',function(){stopMic();try{window.speechSynthesis.cancel();}catch(e){}});

@@ -2,6 +2,7 @@
 import { DurableObject } from 'cloudflare:workers';
 const CODES = { en: 'en', ko: 'ko', ja: 'ja', zh: 'zh', tw: 'tw', es: 'es', vi: 'vi' };
 const NAMES = { en: 'English', ko: 'Korean', ja: 'Japanese', zh: 'Simplified Chinese', tw: 'Traditional Chinese (Taiwan)', es: 'Spanish', vi: 'Vietnamese' };
+const SPEECH = ' IMPORTANT: the input is a raw speech-recognition transcript. Punctuation is missing or unreliable and some words may be misheard (similar-sounding words, wrong particles or endings). Before translating, decide from the wording and the preceding conversation whether the speaker is asking a question, answering one, making a request, stating something, exclaiming, or only reacting with a short filler or backchannel (e.g. 네, 아, 음, 그렇군요, 어머, yeah, oh, uh-huh). Then translate with the matching sentence type: use proper question forms and ? for questions, ! for exclamations, never turn an answer into a question or a question into a statement, and render short reactions as the natural equivalent a native speaker would say. If a word looks like a mishearing, choose the reading that fits the context.';
 const json = (o, status = 200) =>
   new Response(JSON.stringify(o), { status, headers: { 'content-type': 'application/json; charset=utf-8', 'cache-control': 'no-store' } });
 
@@ -279,6 +280,25 @@ async function refreshRank(env) {
 export default {
   async fetch(req, env, ctx) {
     const url = new URL(req.url);
+    if (url.pathname === '/api/stt') {
+      if (req.method !== 'POST') return json({ error: 'POST only' }, 405);
+      const origin = req.headers.get('Origin');
+      if (!origin) return json({ error: 'forbidden' }, 403);
+      try { if (new URL(origin).host !== url.host) return json({ error: 'forbidden' }, 403); } catch (e) { return json({ error: 'forbidden' }, 403); }
+      const lg = CODES[url.searchParams.get('lang')];
+      if (!lg) return json({ error: 'bad lang' }, 400);
+      const buf = await req.arrayBuffer();
+      if (buf.byteLength < 800 || buf.byteLength > 2500000) return json({ error: 'bad size' }, 400);
+      const u8 = new Uint8Array(buf);
+      let bin = '';
+      for (let i = 0; i < u8.length; i += 0x8000) bin += String.fromCharCode.apply(null, u8.subarray(i, i + 0x8000));
+      const PR = { ko: '안녕하세요. 화장실이 어디예요? 이거 얼마예요? 네, 감사합니다!', en: 'Hello. Where is the restroom? How much is this? Yes, thank you!', ja: 'こんにちは。トイレはどこですか？これはいくらですか？はい、ありがとうございます！', zh: '你好。洗手间在哪里？这个多少钱？好的，谢谢！', tw: '你好。洗手間在哪裡？這個多少錢？好的，謝謝！', es: 'Hola. ¿Dónde está el baño? ¿Cuánto cuesta esto? Sí, ¡gracias!', vi: 'Xin chào. Nhà vệ sinh ở đâu ạ? Cái này giá bao nhiêu? Vâng, cảm ơn!' };
+      try {
+        const r = await env.AI.run('@cf/openai/whisper-large-v3-turbo', { audio: btoa(bin), task: 'transcribe', language: lg === 'tw' ? 'zh' : lg, initial_prompt: PR[lg] });
+        const out = String((r && r.text) || '').trim();
+        return json({ text: out });
+      } catch (e) { return json({ error: 'stt failed' }, 502); }
+    }
     if (url.pathname === '/api/translate') {
       if (req.method !== 'POST') return json({ error: 'POST only' }, 405);
       const origin = req.headers.get('Origin');
@@ -289,13 +309,15 @@ export default {
       const from = CODES[b && b.from], to = CODES[b && b.to];
       if (!text || !from || !to) return json({ error: 'bad request' }, 400);
       if (from === to) return json({ text });
+      const sp = !!(b && b.sp);
+      const hist = Array.isArray(b && b.ctx) ? b.ctx.slice(-4).map((x) => (CODES[x && x.f] ? '[' + NAMES[CODES[x.f]] + '] ' + String((x && x.t) || '').slice(0, 160) : '')).filter(Boolean) : [];
       try {
         const bad = (o) => !o || ((to === 'ko' || to === 'es' || to === 'vi' || to === 'en') && /[\u4e00-\u9fff]/.test(o)) || (from === 'ko' && to !== 'ko' && /[\uac00-\ud7a3]/.test(o));
         const ask = async (strict, f = from, g = to, src = text) => {
           try {
             const r = await env.AI.run('@cf/meta/llama-3.3-70b-instruct-fp8-fast', {
               messages: [
-                { role: 'system', content: 'You are a professional live interpreter helping a traveler in Korea. Translate the user message from ' + NAMES[f] + ' to ' + NAMES[g] + '. Use natural, polite, spoken language that a native speaker would actually say. Keep names, numbers and addresses exact. Output ONLY the translation, with no quotes, notes or explanations.' + (strict ? ' The output must be written entirely in ' + NAMES[g] + ' using its own script only; never include Chinese characters or words from other languages.' : '') },
+                { role: 'system', content: 'You are a professional live interpreter helping a traveler in Korea. Translate the user message from ' + NAMES[f] + ' to ' + NAMES[g] + '. Use natural, polite, spoken language that a native speaker would actually say. Keep names, numbers and addresses exact. Output ONLY the translation, with no quotes, notes or explanations.' + (sp && f === from ? SPEECH + (hist.length ? ' Preceding conversation (oldest first):\n' + hist.join('\n') : '') : '') + (strict ? ' The output must be written entirely in ' + NAMES[g] + ' using its own script only; never include Chinese characters or words from other languages.' : '') },
                 { role: 'user', content: src },
               ],
               max_tokens: 300,
