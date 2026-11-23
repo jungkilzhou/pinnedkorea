@@ -393,24 +393,27 @@ html.pg-lock,html.pg-lock body{overflow:hidden}
 .ctl button.zi{background:var(--accent);border-color:var(--accent);color:#fff}
 
 .ipanel{background:var(--surface);border:1px solid var(--line);border-radius:20px;padding:14px}
-.iplang{display:flex;align-items:center;gap:10px;margin:0 0 10px}
-.iplang select{min-height:44px;border-radius:12px;border:1px solid var(--line);background:var(--surface2);color:var(--fg);padding:0 10px;font-weight:600}
-.kobadge{min-height:44px;display:inline-flex;align-items:center;border-radius:12px;background:var(--fg);color:var(--bg);padding:0 14px;font-weight:700}
+.ipane{display:grid;gap:8px;min-width:0;max-width:100%;box-sizing:border-box;padding:10px;border-radius:18px;border:1px solid var(--line);background:var(--surface2)}
+.ipane.rot{transform:rotate(180deg)}
+.ipane>*{min-width:0}.iprow label{min-width:0;flex:1 1 120px}.iprow select{width:100%}.iprow{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.ipwho{font-weight:800;font-size:15px;margin-right:auto}
+.iprow select{min-height:44px;border-radius:12px;border:1px solid var(--line);background:var(--bg);color:var(--fg);padding:0 10px;font-weight:600;font:inherit;font-weight:600}
+.flipb{min-height:44px;border-radius:12px;border:1px solid var(--line);background:var(--bg);color:var(--fg);padding:0 12px;font-weight:600;font-size:13px}
+.flipb[aria-pressed="true"]{background:var(--fg);color:var(--bg)}
 .ilog{min-height:150px;max-height:340px;overflow:auto;display:flex;flex-direction:column;gap:10px;padding:4px 2px 8px}
 .iempty{margin:auto;color:var(--muted);text-align:center}
 .msg{max-width:88%;border-radius:16px;padding:10px 12px;background:var(--surface2)}
-.msg.me{align-self:flex-end;border-bottom-right-radius:4px}
-.msg.ko{align-self:flex-start;border-bottom-left-radius:4px;background:var(--bg);border:1px solid var(--line)}
+.msg.m{align-self:flex-end;border-bottom-right-radius:4px}
+.msg.o{align-self:flex-start;border-bottom-left-radius:4px;background:var(--bg);border:1px solid var(--line)}
 .mo{font-size:13px;color:var(--muted);overflow-wrap:anywhere}
 .mt{font-size:19px;font-weight:700;line-height:1.35;overflow-wrap:anywhere}
 .merr{color:var(--accenttext);font-size:14px;font-weight:600}
 .ma{display:flex;gap:6px;margin-top:6px}
 .ma button{min-height:34px;border-radius:999px;border:1px solid var(--line);background:var(--surface);padding:0 12px;font-size:13px;font-weight:600}
 .ilive{min-height:22px;color:var(--accenttext);font-weight:600;font-size:15px;padding:0 2px}
-.ibtns{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:4px 0 10px}
 .mic{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;min-height:84px;border-radius:18px;border:0;font-weight:800;font-size:14px;line-height:1.25;padding:8px;text-align:center}
-.mic.me{background:var(--accent);color:#fff}
-.mic.ko{background:var(--fg);color:var(--bg)}
+.mic.m{background:var(--accent);color:#fff}
+.mic.o{background:var(--fg);color:var(--bg)}
 .mic.rec{outline:4px solid var(--accent);outline-offset:2px;animation:pulse 1.1s infinite}
 @keyframes pulse{50%{box-shadow:0 0 0 12px rgba(255,74,61,.15)}}
 .itext{display:flex;gap:8px}
@@ -694,17 +697,21 @@ html.pg-lock,html.pg-lock body{overflow:hidden}
     <section class="band" id="sec-interp">
       <h2 class="h2" id="ipT"></h2><p class="lead" id="ipL"></p>
       <div class="ipanel">
-        <div class="iplang"><label><span class="vh" id="ipMyLbl"></span><select id="myLang"></select></label><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 8h15M15 4l4 4-4 4M20 16H5M9 12l-4 4 4 4"/></svg><span class="kobadge">한국어</span></div>
-        <div class="ilog" id="ilog" aria-live="polite"></div>
-        <div class="ilive" id="ilive" aria-live="polite"></div>
-        <div class="ibtns">
-          <button type="button" class="mic me" id="micMe"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><rect x="9" y="3" width="6" height="12" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></svg><span id="micMeT"></span></button>
-          <button type="button" class="mic ko" id="micKo"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><rect x="9" y="3" width="6" height="12" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></svg><span id="micKoT"></span></button>
-        </div>
-        <form class="itext" id="itext"><input id="iin" type="text" autocomplete="off" maxlength="300"><button type="submit" id="isend"></button></form>
-        <label class="iauto"><input type="checkbox" id="iauto" checked><span id="ipAuto"></span></label>
-        <p class="dim" id="ipNote"></p>
-      </div>
+         <div class="ipane o" id="paneO">
+           <div class="iprow"><span class="ipwho" id="ipWhoO"></span><label><span class="vh" id="ipLblO"></span><select id="langO"></select></label><button type="button" class="flipb" id="iflip" aria-pressed="false"></button></div>
+           <button type="button" class="mic o" id="micO"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><rect x="9" y="3" width="6" height="12" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></svg><span id="micTO"></span></button>
+           <form class="itext" id="itextO"><input id="iinO" type="text" autocomplete="off" maxlength="300"><button type="submit" id="isendO"></button></form>
+         </div>
+         <div class="ilog" id="ilog" aria-live="polite"></div>
+         <div class="ilive" id="ilive" aria-live="polite"></div>
+         <div class="ipane m" id="paneM">
+           <div class="iprow"><span class="ipwho" id="ipWhoM"></span><label><span class="vh" id="ipLblM"></span><select id="langM"></select></label></div>
+           <button type="button" class="mic m" id="micM"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><rect x="9" y="3" width="6" height="12" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></svg><span id="micTM"></span></button>
+           <form class="itext" id="itextM"><input id="iinM" type="text" autocomplete="off" maxlength="300"><button type="submit" id="isendM"></button></form>
+         </div>
+         <label class="iauto"><input type="checkbox" id="iauto" checked><span id="ipAuto"></span></label>
+         <p class="dim" id="ipNote"></p>
+       </div>
     </section>
     <section class="band" id="sec-phr"></section>
     <section class="band" id="sec-trip"></section>
@@ -928,14 +935,19 @@ var S={
  mapFail:['지도를 불러오지 못했습니다. 연결을 확인하고 새로고침해 주세요.','Map could not be loaded. Please check your connection and reload.'],
  sInt:['통역','Interpreter','通訳','翻译','翻譯','Intérprete','Thông dịch'],
  ipT:['실시간 통역','Live interpreter','リアルタイム通訳','实时翻译','即時翻譯','Intérprete en vivo','Thông dịch trực tiếp'],
- ipL:['말하거나 입력하면 한국어로 바꿔 읽어 주고, 상대방의 한국어는 내 언어로 바꿔 줍니다.','Speak or type and it turns your words into Korean and reads them aloud. The Korean reply is translated back to you.','話すか入力すると韓国語に訳して読み上げます。相手の韓国語はあなたの言語に訳します。','说话或输入，系统会翻译成韩语并朗读；对方的韩语也会翻译成你的语言。','說話或輸入，系統會翻譯成韓語並朗讀；對方的韓語也會翻譯成你的語言。','Habla o escribe y se traduce al coreano y se lee en voz alta. La respuesta en coreano se traduce para ti.','Nói hoặc gõ và nó sẽ chuyển đổi lời nói của bạn thành tiếng Hàn và đọc to. Câu trả lời bằng tiếng Hàn sẽ được dịch lại cho bạn.'],
+ ipL:['상대와 각자 쓰는 언어를 고르고 마이크를 누르면, 말한 내용이 상대 언어로 번역돼 읽어 줍니다. 7개 언어를 서로 자유롭게 통역해요.','Each person picks a language and taps their own mic. What you say is translated into the other language and read aloud. Any of the 7 languages works both ways.','それぞれ言語を選んで自分のマイクを押すと、相手の言語に訳して読み上げます。7言語を相互に通訳できます。','双方各选语言并点按自己的麦克风，说的话会翻译成对方的语言并朗读。7种语言可互译。','雙方各選語言並點按自己的麥克風，說的話會翻譯成對方的語言並朗讀。7種語言可互譯。','Cada persona elige su idioma y toca su micrófono. Lo que dices se traduce al otro idioma y se lee en voz alta. Los 7 idiomas funcionan en ambos sentidos.','Mỗi người chọn ngôn ngữ và chạm micro của mình. Lời nói được dịch sang ngôn ngữ kia và đọc to. 7 ngôn ngữ đều dịch qua lại được.'],
  ipMe:['내가 말하기','I speak','話す','我说','我說','Hablo yo','Tôi nói'],
  ipKo:['한국어 상대','Korean speaker','韓国語の相手','对方(韩语)','對方(韓語)','Habla el coreano','Người nói tiếng Hàn'],
- ipPh:['여기에 입력 (한국어도 가능)','Type here (Korean works too)','ここに入力（韓国語もOK）','在此输入（也可输入韩语）','在此輸入（也可輸入韓語）','Escribe aquí (también en coreano)','Hãy nhập ở đây (cũng có thể nhập bằng tiếng Hàn)'],
+ ipPh:['여기에 입력','Type here','ここに入力','在此输入','在此輸入','Escribe aquí','Nhập tại đây'],
  ipSend:['번역','Translate','翻訳','翻译','翻譯','Traducir','Dịch'],
  ipMyLang:['내 언어','My language','自分の言語','我的语言','我的語言','Mi idioma','Ngôn ngữ của tôi'],
- ipAuto:['한국어 음성 자동 재생','Auto-play Korean voice','韓国語を自動再生','自动播放韩语语音','自動播放韓語語音','Reproducir coreano automáticamente','Tự phát tiếng Hàn'],
- ipEmpty:['마이크 버튼을 누르고 말해 보세요.','Tap the mic and start talking.','マイクを押して話してみてください。','点按麦克风开始说话。','點按麥克風開始說話。','Toca el micrófono y habla.','Chạm vào micro và bắt đầu nói.'],
+ ipFlip:['마주 보기','Face to face','向かい合わせ','面对面','面對面','Cara a cara','Đối diện'],
+ ipSpeak:['눌러서 말하기','Tap to speak','押して話す','点按说话','點按說話','Toca para hablar','Chạm để nói'],
+ ipOthT:['상대방','Other person','相手','对方','對方','Otra persona','Người đối diện'],
+ ipMeT:['나','Me','自分','我','我','Yo','Tôi'],
+ ipOthLang:['상대방 언어','Other person’s language','相手の言語','对方的语言','對方的語言','Idioma de la otra persona','Ngôn ngữ của người kia'],
+ ipAuto:['번역 음성 자동 재생','Auto-play translated voice','訳を自動で読み上げ','自动朗读译文','自動朗讀譯文','Reproducir traducción automáticamente','Tự động đọc bản dịch'],
+ ipEmpty:['각자 마이크 버튼을 누르고 말해 보세요.','Each person: tap your mic and start talking.','それぞれマイクを押して話してみてください。','双方各自点按麦克风开始说话。','雙方各自點按麥克風開始說話。','Cada persona: toca tu micrófono y habla.','Mỗi người chạm vào micro của mình và nói.'],
  ipCta:['실시간 통역 시작','Start live interpreter','通訳を始める','开始实时翻译','開始即時翻譯','Iniciar intérprete','Bắt đầu thông dịch trực tiếp'],
  ipNote:['시험 버전입니다. 번역은 AI가 하므로 병원·계약 등 중요한 내용은 꼭 다시 확인하세요. 마이크가 안 되면 크롬이나 사파리로 열어 주세요.','Beta. Translations are machine-made, so double-check anything important (medical, contracts). If the mic does nothing, open this page in Chrome or Safari.'],
  noMic:['이 브라우저는 음성 인식을 지원하지 않아요. 글자로 입력해 주세요.','This browser doesn’t support speech recognition. Please type instead.'],
@@ -2103,10 +2115,12 @@ $('#sec-phr').addEventListener('click',function(e){
  var sy=e.target.closest('[data-say]');if(sy)say(cur[3][+sy.getAttribute('data-say')][0]);});
 document.addEventListener('keydown',function(e){if(e.key==='Escape'){closeSOS();$('#showOv').hidden=true;}});
 /* ---------- live interpreter (Web Speech API + /api/translate on Cloudflare Workers AI) ---------- */
-var ILANGS=[['en','English','en-US','en'],['ja','日本語','ja-JP','ja'],['zh','简体中文','zh-CN','zh'],['tw','繁體中文','zh-TW','tw'],['es','Español','es-ES','es'],['vi','Tiếng Việt','vi-VN','vi']];
-var myL=lang==='ko'?'en':lang;try{var ml=localStorage.getItem('pk-my');if(ml&&ILANGS.some(function(x){return x[0]===ml;}))myL=ml;}catch(e){}
+var ILANGS=[['en','English','en-US','en'],['ko','한국어','ko-KR','ko'],['ja','日本語','ja-JP','ja'],['zh','简体中文','zh-CN','zh'],['tw','繁體中文','zh-TW','tw'],['es','Español','es-ES','es'],['vi','Tiếng Việt','vi-VN','vi']];
 function IL(c){for(var i=0;i<ILANGS.length;i++)if(ILANGS[i][0]===c)return ILANGS[i];return ILANGS[0];}
-var ilog=[],rec=null;
+function okL(c){return ILANGS.some(function(x){return x[0]===c;});}
+var myL=okL(lang)?lang:'en',othL=myL==='ko'?'en':'ko';
+try{var ml=localStorage.getItem('pk-my'),ol=localStorage.getItem('pk-oth');if(ml&&okL(ml))myL=ml;if(ol&&okL(ol))othL=ol;if(othL===myL)othL=myL==='ko'?'en':'ko';}catch(e){}
+var ilog=[],rec=null,recSide=null;
 function gotoInterp(){var el=$('#sec-interp');el.scrollIntoView({behavior:reduce?'auto':'smooth',block:'start'});}
 function speak(text,bcp){try{if(!('speechSynthesis' in window)||typeof SpeechSynthesisUtterance==='undefined'){toast(pk2(S.noSpeech));return;}
  var u=new SpeechSynthesisUtterance(text);u.lang=bcp;var vs=window.speechSynthesis.getVoices()||[];
@@ -2116,47 +2130,53 @@ function translate(text,from,to){return fetch('/api/translate',{method:'POST',he
 function renderLog(){var el=$('#ilog');
  if(!ilog.length){el.innerHTML='<p class="iempty">'+esc(t('ipEmpty'))+'</p>';return;}
  var h='';ilog.forEach(function(m,i){
-  h+='<div class="msg '+m.dir+'"><div class="mo">'+esc(m.src)+'</div><div class="mt">'+(m.busy?'…':m.err?'<span class="merr">'+esc(pk2(S.trFail))+'</span>':esc(m.out))+'</div>';
+  h+='<div class="msg '+m.dir+'"><div class="mo">'+esc(IL(m.from)[1])+' · '+esc(m.src)+'</div><div class="mt">'+(m.busy?'…':m.err?'<span class="merr">'+esc(pk2(S.trFail))+'</span>':esc(m.out))+'</div>';
   if(m.out)h+='<div class="ma"><button type="button" data-a="say" data-i="'+i+'">'+esc(t('listen'))+'</button><button type="button" data-a="big" data-i="'+i+'">'+esc(t('show'))+'</button></div>';
   h+='</div>';});
  el.innerHTML=h;el.scrollTop=el.scrollHeight;}
-function outBcp(m){return m.dir==='me'?'ko-KR':IL(myL)[2];}
-function addMsg(dir,text){
- var m={dir:dir,src:text,out:null,busy:true,err:false};ilog.push(m);if(ilog.length>40)ilog.shift();renderLog();
- var from=dir==='me'?IL(myL)[3]:'ko',to=dir==='me'?'ko':IL(myL)[3];
- translate(text,from,to).then(function(o){m.out=o;m.busy=false;renderLog();if($('#iauto').checked&&dir==='me')speak(o,'ko-KR');})
+function sideL(s){return s==='M'?myL:othL;}
+function addMsg(side,text){
+ var from=sideL(side),to=sideL(side==='M'?'O':'M');
+ var m={dir:side==='M'?'m':'o',from:from,to:to,src:text,out:null,busy:true,err:false};ilog.push(m);if(ilog.length>40)ilog.shift();renderLog();
+ translate(text,IL(from)[3],IL(to)[3]).then(function(o){m.out=o;m.busy=false;renderLog();if($('#iauto').checked)speak(o,IL(to)[2]);})
  .catch(function(){m.busy=false;m.err=true;renderLog();});
 }
-function setMic(dir){$('#micMe').classList.toggle('rec',dir==='me');$('#micKo').classList.toggle('rec',dir==='ko');}
+function setMic(side){$('#micM').classList.toggle('rec',side==='M');$('#micO').classList.toggle('rec',side==='O');}
 var recT=0,recMax=0;
-function stopMic(){clearTimeout(recT);clearTimeout(recMax);if(rec){var r=rec;rec=null;r.onresult=r.onerror=r.onend=null;try{r.abort();}catch(e){}}setMic(null);$('#ilive').textContent='';}
-function listen(dir){
+function stopMic(){clearTimeout(recT);clearTimeout(recMax);if(rec){var r=rec;rec=null;r.onresult=r.onerror=r.onend=null;try{r.abort();}catch(e){}}recSide=null;setMic(null);$('#ilive').textContent='';}
+function listen(side){
  var SR=window.SpeechRecognition||window.webkitSpeechRecognition;
- if(!SR){toast(pk2(S.noMic));$('#iin').focus();return;}
- if(rec){var cur=rec;try{cur.stop();}catch(e){stopMic();}return;}
- var r=new SR(),fin='',live=$('#ilive');rec=r;
- r.lang=dir==='ko'?'ko-KR':IL(myL)[2];r.interimResults=true;r.continuous=false;
+ if(!SR){toast(pk2(S.noMic));$('#iin'+side).focus();return;}
+ if(rec){var cur=rec,same=recSide===side;try{cur.stop();}catch(e){stopMic();}if(same)return;stopMic();}
+ try{window.speechSynthesis.cancel();}catch(e){}
+ var r=new SR(),fin='',live=$('#ilive');rec=r;recSide=side;
+ r.lang=IL(sideL(side))[2];r.interimResults=true;r.continuous=false;
  r.onresult=function(e){var s2='';for(var i=0;i<e.results.length;i++){s2+=e.results[i][0].transcript;}fin=s2;live.textContent=s2;
   clearTimeout(recT);recT=setTimeout(function(){try{r.stop();}catch(x){stopMic();}},1800);};
  r.onerror=function(e){if(e.error==='not-allowed'||e.error==='service-not-allowed')toast(pk2(S.micDenied));};
- r.onend=function(){clearTimeout(recT);clearTimeout(recMax);var had=fin.trim();rec=null;setMic(null);live.textContent='';if(had)addMsg(dir,had);};
- try{r.start();setMic(dir);live.textContent='…';recMax=setTimeout(function(){try{r.stop();}catch(x){stopMic();}},12000);}catch(e){stopMic();}
+ r.onend=function(){clearTimeout(recT);clearTimeout(recMax);var had=fin.trim();rec=null;recSide=null;setMic(null);live.textContent='';if(had)addMsg(side,had);};
+ try{r.start();setMic(side);live.textContent='…';recMax=setTimeout(function(){try{r.stop();}catch(x){stopMic();}},12000);}catch(e){stopMic();}
 }
 document.addEventListener('visibilitychange',function(){if(document.hidden){stopMic();try{window.speechSynthesis.cancel();}catch(e){}}});
 window.addEventListener('pagehide',function(){stopMic();try{window.speechSynthesis.cancel();}catch(e){}});
-$('#micMe').addEventListener('click',function(){listen('me');});
-$('#micKo').addEventListener('click',function(){listen('ko');});
-$('#itext').addEventListener('submit',function(e){e.preventDefault();var v=$('#iin').value.trim();if(!v)return;$('#iin').value='';addMsg(/[ㄱ-ㆎ가-힣]/.test(v)?'ko':'me',v);});
+$('#micM').addEventListener('click',function(){listen('M');});
+$('#micO').addEventListener('click',function(){listen('O');});
+['M','O'].forEach(function(s){$('#itext'+s).addEventListener('submit',function(e){e.preventDefault();var v=$('#iin'+s).value.trim();if(!v)return;$('#iin'+s).value='';addMsg(s,v);});});
 $('#ilog').addEventListener('click',function(e){var b=e.target.closest('[data-a]');if(!b)return;var m=ilog[+b.getAttribute('data-i')];if(!m||!m.out)return;
- if(b.getAttribute('data-a')==='say')speak(m.out,outBcp(m));
+ if(b.getAttribute('data-a')==='say')speak(m.out,IL(m.to)[2]);
  else{$('#showOv').innerHTML='<div class="bk">'+esc(m.out)+'</div><div class="bt">'+esc(m.src)+'</div><button type="button" id="bigClose">'+esc(t('close'))+'</button>';$('#showOv').hidden=false;$('#bigClose').focus();}});
-(function(){var s=$('#myLang'),h='';ILANGS.forEach(function(l){h+='<option value="'+l[0]+'">'+l[1]+'</option>';});s.innerHTML=h;s.value=myL;
- s.addEventListener('change',function(){myL=s.value;try{localStorage.setItem('pk-my',myL);}catch(e){}applyInterp();});})();
+(function(){var h='';ILANGS.forEach(function(l){h+='<option value="'+l[0]+'">'+l[1]+'</option>';});
+ ['M','O'].forEach(function(s){var el=$('#lang'+s);el.innerHTML=h;el.value=sideL(s);
+  el.addEventListener('change',function(){var v=el.value;stopMic();
+   if(s==='M'){if(v===othL)othL=myL;myL=v;}else{if(v===myL)myL=othL;othL=v;}
+   try{localStorage.setItem('pk-my',myL);localStorage.setItem('pk-oth',othL);}catch(e){}applyInterp();});});
+ $('#iflip').addEventListener('click',function(){var on=$('#paneO').classList.toggle('rot');this.setAttribute('aria-pressed',on);});})();
 function applyInterp(){
  $('#ipT').textContent=t('ipT');$('#ipL').textContent=t('ipL');
- $('#micMeT').textContent=t('ipMe')+' · '+IL(myL)[1];$('#micKoT').textContent=t('ipKo');
- $('#iin').placeholder=t('ipPh');$('#isend').textContent=t('ipSend');$('#ipAuto').textContent=t('ipAuto');
- $('#ipMyLbl').textContent=t('ipMyLang');$('#ipNote').textContent=pk2(S.ipNote);
+ ['M','O'].forEach(function(s){var c=sideL(s);$('#lang'+s).value=c;
+  $('#ipWho'+s).textContent=t(s==='M'?'ipMeT':'ipOthT');$('#ipLbl'+s).textContent=t(s==='M'?'ipMyLang':'ipOthLang');
+  $('#micT'+s).textContent=t('ipSpeak')+' · '+IL(c)[1];$('#iin'+s).placeholder=t('ipPh');$('#isend'+s).textContent=t('ipSend');});
+ $('#iflip').textContent=t('ipFlip');$('#ipAuto').textContent=t('ipAuto');$('#ipNote').textContent=pk2(S.ipNote);
  $('#ctaInt').lastChild.textContent=t('ipCta');$('#zint').setAttribute('aria-label',t('ipT'));$('#zint').title=t('ipT');
  renderLog();}
 $('#ctaInt').addEventListener('click',gotoInterp);

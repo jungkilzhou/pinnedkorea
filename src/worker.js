@@ -302,6 +302,9 @@ export default {
           });
           out = String((r && (r.response || (r.result && r.result.response))) || '').trim();
         } catch (e) { out = ''; }
+        // guard: Korean/Japanese/Spanish/Vietnamese/English output must not leak Chinese characters (or Hangul in non-Korean output)
+        if (out && ((to === 'ko' || to === 'es' || to === 'vi' || to === 'en') && /[\u4e00-\u9fff]/.test(out))) out = '';
+        if (out && to !== 'ko' && from === 'ko' && /[\uac00-\ud7a3]/.test(out)) out = '';
         if (!out) {
           const m = (c) => (c === 'tw' ? 'zh' : c);
           const r2 = await env.AI.run('@cf/meta/m2m100-1.2b', { text, source_lang: m(from), target_lang: m(to) });
