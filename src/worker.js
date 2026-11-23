@@ -291,12 +291,12 @@ export default {
       if (from === to) return json({ text });
       try {
         const bad = (o) => !o || ((to === 'ko' || to === 'es' || to === 'vi' || to === 'en') && /[\u4e00-\u9fff]/.test(o)) || (from === 'ko' && to !== 'ko' && /[\uac00-\ud7a3]/.test(o));
-        const ask = async (strict) => {
+        const ask = async (strict, f = from, g = to, src = text) => {
           try {
             const r = await env.AI.run('@cf/meta/llama-3.3-70b-instruct-fp8-fast', {
               messages: [
-                { role: 'system', content: 'You are a professional live interpreter helping a traveler in Korea. Translate the user message from ' + NAMES[from] + ' to ' + NAMES[to] + '. Use natural, polite, spoken language that a native speaker would actually say. Keep names, numbers and addresses exact. Output ONLY the translation, with no quotes, notes or explanations.' + (strict ? ' The output must be written entirely in ' + NAMES[to] + ' using its own script only; never include Chinese characters or words from other languages.' : '') },
-                { role: 'user', content: text },
+                { role: 'system', content: 'You are a professional live interpreter helping a traveler in Korea. Translate the user message from ' + NAMES[f] + ' to ' + NAMES[g] + '. Use natural, polite, spoken language that a native speaker would actually say. Keep names, numbers and addresses exact. Output ONLY the translation, with no quotes, notes or explanations.' + (strict ? ' The output must be written entirely in ' + NAMES[g] + ' using its own script only; never include Chinese characters or words from other languages.' : '') },
+                { role: 'user', content: src },
               ],
               max_tokens: 300,
               temperature: strict ? 0 : 0.2,
@@ -306,6 +306,7 @@ export default {
         };
         let out = await ask(false);
         if (bad(out)) out = await ask(true);
+        if (bad(out) && from !== 'en' && to !== 'en') { const mid = await ask(false, from, 'en'); if (mid) out = await ask(true, 'en', to, mid); }
         if (bad(out)) out = '';
         if (!out) {
           const m = (c) => (c === 'tw' ? 'zh' : c);
