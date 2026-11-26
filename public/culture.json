@@ -1,27 +1,601 @@
 {
-"upd": "2026-11-25T23:20:00+09:00",
-"ev": [
-{"id":"c1","k":"award","t":"MMA2026 멜론뮤직어워드","s":"20261114","e":"20261115","r":"seoul","la":37.4982,"lo":126.8671,"v":"고척스카이돔","tags":["MMA2026","멜론뮤직어워드"],"who":"aespa · IVE · NCT DREAM · ILLIT · PLAVE · ATEEZ · RIIZE · I.O.I","src":"https://www.koreatimes.co.kr/entertainment/k-pop/20261014/mma2026-brings-26-k-pop-acts-to-gocheok-dome-for-2-night-spectacle","st":"Korea Times","te":"MMA2026 · 18th Melon Music Awards","ve":"Gocheok Sky Dome","i":"https://newsimg.koreatimes.co.kr/2026/10/14/7d9c6928-b20a-48e9-8159-0f8b5c41bc86.jpg"},
-{"id":"c2","k":"kpop","t":"원더라이벳 2026","s":"20261120","e":"20261122","r":"gyeonggi","la":37.6689,"lo":126.7459,"v":"킨텍스 2관","tags":["WONDERLIVET","원더라이벳"],"who":"J-POP & music festival","src":"https://sports.khan.co.kr/en/article/202608252147007","st":"Kyunghyang","te":"WONDERLIVET 2026","ve":"KINTEX Exhibition Hall 2"},
-{"id":"c3","k":"kpop","t":"엔믹스 월드투어 파이널","s":"20261127","e":"20261129","r":"incheon","la":37.4426,"lo":126.4533,"v":"인스파이어 아레나","tags":["NMIXX","엔믹스콘서트"],"who":"NMIXX","src":"https://kpopofficial.com/schedule/south-korea/","st":"kpopofficial.com","te":"NMIXX 1st World Tour Finale","ve":"Inspire Arena, Incheon"},
-{"id":"c4","k":"kpop","t":"데이식스 스페셜 콘서트 The Present","s":"20261218","e":"20261220","r":"seoul","la":37.5189,"lo":127.1269,"v":"KSPO 돔 · 올림픽공원","tags":["DAY6","데이식스콘서트"],"who":"DAY6","src":"https://sports.khan.co.kr/en/article/202611120000007","st":"Kyunghyang","te":"DAY6 Special Concert 'The Present'","ve":"KSPO DOME, Olympic Park","i":"https://images.khan.co.kr/article/2026/11/11/news-p.v1.20261111.4b668c0de7994e9ebe4b5233304a7f2c_P1.jpg"},
-{"id":"c5","k":"award","t":"2026 SBS 가요대전 (30주년)","s":"20261224","e":"20261225","r":"gyeonggi","la":37.6689,"lo":126.7459,"v":"킨텍스 일산","tags":["SBS가요대전","가요대전"],"who":"Year-end music festival","src":"https://ent.sbs.co.kr/news/article.do?article_id=E10010322730","st":"SBS 공식","te":"2026 SBS Gayo Daejeon (30th)","ve":"KINTEX, Ilsan"},
-{"id":"c6","k":"kpop","t":"에이티즈 월드투어 ZERO TO ALL","s":"20270122","e":"20270124","r":"incheon","la":37.4426,"lo":126.4533,"v":"네이버 아레나 인스파이어","tags":["ATEEZ","에이티즈콘서트"],"who":"ATEEZ","src":"https://kpopofficial.com/schedule/south-korea/","st":"kpopofficial.com","te":"ATEEZ World Tour 'ZERO TO ALL'","ve":"NAVER ARENA at INSPIRE"},
-{"id":"c7","k":"fanmeet","t":"송강 팬미팅 PLAY, SONG KANG in SEOUL","s":"20261205","e":"20261205","r":"seoul","la":37.5116,"lo":127.059,"v":"코엑스 아티움 우리은행홀 · 오후 6시","tags":["송강팬미팅","송강"],"src":"https://www.topstarnews.net/news/articleView.html?idxno=16246333","st":"TopStarNews","te":"Song Kang Fan Meeting 'PLAY, SONG KANG in SEOUL'","ve":"COEX Artium, Woori Bank Hall · 6 PM","i":"https://cdn.topstarnews.net/news/photo/202610/16246333_2054398_1715_crop.jpg"},
-{"id":"c8","k":"fanmeet","t":"신혜선 팬미팅 [써니 인사이드]","s":"20261212","e":"20261212","r":"seoul","la":37.6068,"lo":127.0417,"v":"동덕여대 백주년기념관 · 오후 2시·6시","tags":["신혜선팬미팅","신혜선"],"src":"https://isplus.com/article/view/isp202611090197","st":"일간스포츠","te":"Shin Hye-sun Fan Meeting [SUNNY INSIDE]","ve":"Dongduk Women's Univ. Centennial Hall · 2 PM & 6 PM","i":"https://isplus.com/data/isp/image/2026/11/09/isp20261109000200.800x.0.jpg"},
-{"id":"c9","k":"beauty","t":"올영데이","s":"20261125","e":"20261127","r":"seoul","la":37.5636,"lo":126.9853,"v":"전국 올리브영 · 명동 매장 추천","tags":["올영데이","올리브영"],"src":"https://benefitshub.co.kr/oliveyoung-sale/","st":"혜택창고 (매월 25~27일 기준)","te":"Olive Young Day","ve":"Olive Young stores nationwide · try Myeongdong"},
-{"id":"c10","k":"beauty","t":"연말 올영세일","s":"20261130","e":"20261206","r":"seoul","la":37.5636,"lo":126.9853,"v":"전국 올리브영 · 일정 예정(공식 확인)","tags":["올영세일","올리브영"],"src":"https://benefitshub.co.kr/oliveyoung-sale/","st":"혜택창고 (예정)","te":"Olive Young Year-End Sale","ve":"Olive Young stores · dates tentative"},
-{"id":"c11","k":"beauty","t":"올영데이 (12월)","s":"20261225","e":"20261227","r":"seoul","la":37.5636,"lo":126.9853,"v":"전국 올리브영 · 매월 25~27일 기준","tags":["올영데이","올리브영"],"src":"https://benefitshub.co.kr/oliveyoung-sale/","st":"혜택창고 (추정)","te":"Olive Young Day (Dec)","ve":"Olive Young stores · usually 25th–27th"},
-{"id":"c12","k":"kpop","t":"지드래곤 앵콜 콘서트","te":"G-DRAGON Encore Concert","s":"20261212","e":"20261214","r":"seoul","la":37.4982,"lo":126.8671,"v":"고척스카이돔","ve":"Gocheok Sky Dome","tags":["GDRAGON","지드래곤콘서트"],"src":"https://www.koreaherald.com/article/10611650","st":"Korea Herald"},
-{"id":"c13","k":"film","t":"제47회 청룡영화상","s":"20261125","e":"20261125","r":"seoul","la":37.5283,"lo":126.916,"v":"KBS홀(여의도)","tags":["청룡영화상","BlueDragonAwards"],"src":"https://www.soompi.com/article/1882479wpp/guide-to-2026-year-end-shows-and-upcoming-awards-shows-schedules-lineups-nominees-and-more","st":"Soompi","te":"47th Blue Dragon Film Awards","ve":"KBS Hall, Yeouido","i":"https://0.soompi.io/wp-content/uploads/2026/10/29164609/awards-.jpg"},
-{"id":"c14","k":"award","t":"2026 KBS 가요대축제","s":"20261218","e":"20261218","r":"seoul","la":37.5638,"lo":126.833,"v":"KBS 아레나 · 오후 7시","tags":["KBS가요대축제","KBSSongFestival"],"src":"https://www.soompi.com/article/1882479wpp/guide-to-2026-year-end-shows-and-upcoming-awards-shows-schedules-lineups-nominees-and-more","st":"Soompi","te":"2026 KBS Song Festival","ve":"KBS Arena · 7 PM","i":"https://0.soompi.io/wp-content/uploads/2026/10/29164609/awards-.jpg"},
-{"id":"c15","k":"award","t":"2026 APAN 스타 어워즈","s":"20261223","e":"20261223","r":"seoul","v":"상명아트센터 계당홀","tags":["APAN스타어워즈","APANStarAwards"],"src":"https://www.soompi.com/article/1882479wpp/guide-to-2026-year-end-shows-and-upcoming-awards-shows-schedules-lineups-nominees-and-more","st":"Soompi","te":"2026 APAN Star Awards","ve":"Sangmyung Art Center Gyedang Hall","i":"https://0.soompi.io/wp-content/uploads/2026/10/29164609/awards-.jpg"},
-{"id":"c16","k":"kpop","t":"규현 콘서트 CONTINUE","s":"20261218","e":"20261220","r":"seoul","la":37.5577,"lo":127.0069,"v":"장충체육관","tags":["규현","KYUHYUN"],"who":"Kyuhyun","src":"https://www.soompi.com/article/1797016wpp","st":"Soompi","te":"Kyuhyun CONTINUE Concert","ve":"Jangchung Arena, Seoul"},
-{"id":"c17","k":"kpop","t":"FLARE U 콘서트 Where U'RE","s":"20261226","e":"20261227","r":"seoul","la":37.5577,"lo":127.0069,"v":"장충체육관","tags":["FLAREU"],"who":"FLARE U","src":"https://www.soompi.com/article/1797016wpp","st":"Soompi","te":"FLARE U Where U'RE","ve":"Jangchung Arena, Seoul"},
-{"id":"c18","k":"fanmeet","t":"티파니 영 Edge of Calm","s":"20261227","e":"20261227","r":"seoul","la":37.5617,"lo":126.9467,"v":"이화여대 대강당","tags":["TiffanyYoung","티파니영"],"who":"Tiffany Young","src":"https://www.soompi.com/article/1797016wpp","st":"Soompi","te":"Tiffany Young Edge of Calm","ve":"Ewha Womans University Auditorium, Seoul"},
-{"id":"c19","k":"kpop","t":"펜타곤 101010","s":"20261231","e":"20261231","r":"seoul","la":37.5392,"lo":127.0017,"v":"블루스퀘어 우리WON뱅킹홀","tags":["PENTAGON","펜타곤"],"who":"PENTAGON","src":"https://www.soompi.com/article/1797016wpp","st":"Soompi","te":"PENTAGON 101010","ve":"BLUESQUARE Woori WON Banking Hall, Seoul"},
-{"id":"c20","k":"fanmeet","t":"NEXZ 2ND FAN MEETING <MERRY MERRY NEX2Y!>","te":"NEXZ 2nd Fan Meeting <MERRY MERRY NEX2Y!>","s":"20261219","e":"20261220","r":"gyeonggi","la":37.6689,"lo":126.7459,"v":"킨텍스 제2전시장 8B홀 (일산)","ve":"KINTEX Exhibition Center 2, Hall 8B (Ilsan)","tags":["NEXZ","MERRYMERRYNEX2Y"],"i":"https://images.khan.co.kr/article/2026/11/12/news-p.v1.20261112.9457a7ee23224bd4a7df8defd37f1b7e_P1.jpg","src":"https://sports.khan.co.kr/en/article/202611121619007","st":"Sports Kyunghyang"},
-{"id":"c21","k":"fanmeet","t":"육성재 팬미팅 Five to Seven","te":"Yook Sung-jae Fan Meeting <Five to Seven>","s":"20261211","e":"20261212","r":"seoul","la":37.5626,"lo":126.9468,"v":"이화여대 대강당 (12/11 19시, 12/12 18시)","ve":"Ewha Womans Univ. Grand Auditorium (Dec 11 7pm, Dec 12 6pm)","tags":["육성재","FiveToSeven"],"i":"https://images.khan.co.kr/article/2026/11/04/news-p.v1.20261104.e4dfcc08502a49a5bec9f8ec7adc4e3f_P1.png","src":"https://sports.khan.co.kr/en/article/202611041614007","st":"Sports Kyunghyang"},
-{"id":"c22","k":"kpop","t":"2026 패닉 콘서트 PANIC IS COMING, AGAIN","te":"2026 Panic Concert <PANIC IS COMING, AGAIN>","s":"20261204","e":"20261206","r":"seoul","la":37.5963,"lo":127.0518,"v":"경희대 평화의전당 (금 19:30, 토 17시, 일 16시)","ve":"Kyung Hee Univ. Peace Hall (Fri 7:30pm, Sat 5pm, Sun 4pm)","tags":["패닉콘서트","PANIC"],"i":"https://images.khan.co.kr/article/2026/10/12/news-p.v1.20261012.87d5fa8e0373407c839fb66b5007eedb_P1.png","src":"https://sports.khan.co.kr/en/article/202610121346007","st":"Sports Kyunghyang"}
-]
+ "upd": "2026-11-26T23:00:00+09:00",
+ "ev": [
+  {
+   "id": "c1",
+   "k": "award",
+   "t": "MMA2026 멜론뮤직어워드",
+   "s": "20261114",
+   "e": "20261115",
+   "r": "seoul",
+   "la": 37.4982,
+   "lo": 126.8671,
+   "v": "고척스카이돔",
+   "tags": [
+    "MMA2026",
+    "멜론뮤직어워드"
+   ],
+   "who": "aespa · IVE · NCT DREAM · ILLIT · PLAVE · ATEEZ · RIIZE · I.O.I",
+   "src": "https://www.koreatimes.co.kr/entertainment/k-pop/20261014/mma2026-brings-26-k-pop-acts-to-gocheok-dome-for-2-night-spectacle",
+   "st": "Korea Times",
+   "te": "MMA2026 · 18th Melon Music Awards",
+   "ve": "Gocheok Sky Dome",
+   "i": "https://newsimg.koreatimes.co.kr/2026/10/14/7d9c6928-b20a-48e9-8159-0f8b5c41bc86.jpg"
+  },
+  {
+   "id": "c2",
+   "k": "kpop",
+   "t": "원더라이벳 2026",
+   "s": "20261120",
+   "e": "20261122",
+   "r": "gyeonggi",
+   "la": 37.6689,
+   "lo": 126.7459,
+   "v": "킨텍스 2관",
+   "tags": [
+    "WONDERLIVET",
+    "원더라이벳"
+   ],
+   "who": "J-POP & music festival",
+   "src": "https://sports.khan.co.kr/en/article/202608252147007",
+   "st": "Kyunghyang",
+   "te": "WONDERLIVET 2026",
+   "ve": "KINTEX Exhibition Hall 2"
+  },
+  {
+   "id": "c3",
+   "k": "kpop",
+   "t": "엔믹스 월드투어 파이널",
+   "s": "20261127",
+   "e": "20261129",
+   "r": "incheon",
+   "la": 37.4426,
+   "lo": 126.4533,
+   "v": "인스파이어 아레나",
+   "tags": [
+    "NMIXX",
+    "엔믹스콘서트"
+   ],
+   "who": "NMIXX",
+   "src": "https://kpopofficial.com/schedule/south-korea/",
+   "st": "kpopofficial.com",
+   "te": "NMIXX 1st World Tour Finale",
+   "ve": "Inspire Arena, Incheon"
+  },
+  {
+   "id": "c4",
+   "k": "kpop",
+   "t": "데이식스 스페셜 콘서트 The Present",
+   "s": "20261218",
+   "e": "20261220",
+   "r": "seoul",
+   "la": 37.5189,
+   "lo": 127.1269,
+   "v": "KSPO 돔 · 올림픽공원",
+   "tags": [
+    "DAY6",
+    "데이식스콘서트"
+   ],
+   "who": "DAY6",
+   "src": "https://sports.khan.co.kr/en/article/202611120000007",
+   "st": "Kyunghyang",
+   "te": "DAY6 Special Concert 'The Present'",
+   "ve": "KSPO DOME, Olympic Park",
+   "i": "https://images.khan.co.kr/article/2026/11/11/news-p.v1.20261111.4b668c0de7994e9ebe4b5233304a7f2c_P1.jpg"
+  },
+  {
+   "id": "c5",
+   "k": "award",
+   "t": "2026 SBS 가요대전 (30주년)",
+   "s": "20261224",
+   "e": "20261225",
+   "r": "gyeonggi",
+   "la": 37.6689,
+   "lo": 126.7459,
+   "v": "킨텍스 일산",
+   "tags": [
+    "SBS가요대전",
+    "가요대전"
+   ],
+   "who": "Year-end music festival",
+   "src": "https://ent.sbs.co.kr/news/article.do?article_id=E10010322730",
+   "st": "SBS 공식",
+   "te": "2026 SBS Gayo Daejeon (30th)",
+   "ve": "KINTEX, Ilsan"
+  },
+  {
+   "id": "c6",
+   "k": "kpop",
+   "t": "에이티즈 월드투어 ZERO TO ALL",
+   "s": "20270122",
+   "e": "20270124",
+   "r": "incheon",
+   "la": 37.4426,
+   "lo": 126.4533,
+   "v": "네이버 아레나 인스파이어",
+   "tags": [
+    "ATEEZ",
+    "에이티즈콘서트"
+   ],
+   "who": "ATEEZ",
+   "src": "https://kpopofficial.com/schedule/south-korea/",
+   "st": "kpopofficial.com",
+   "te": "ATEEZ World Tour 'ZERO TO ALL'",
+   "ve": "NAVER ARENA at INSPIRE"
+  },
+  {
+   "id": "c7",
+   "k": "fanmeet",
+   "t": "송강 팬미팅 PLAY, SONG KANG in SEOUL",
+   "s": "20261205",
+   "e": "20261205",
+   "r": "seoul",
+   "la": 37.5116,
+   "lo": 127.059,
+   "v": "코엑스 아티움 우리은행홀 · 오후 6시",
+   "tags": [
+    "송강팬미팅",
+    "송강"
+   ],
+   "src": "https://www.topstarnews.net/news/articleView.html?idxno=16246333",
+   "st": "TopStarNews",
+   "te": "Song Kang Fan Meeting 'PLAY, SONG KANG in SEOUL'",
+   "ve": "COEX Artium, Woori Bank Hall · 6 PM",
+   "i": "https://cdn.topstarnews.net/news/photo/202610/16246333_2054398_1715_crop.jpg"
+  },
+  {
+   "id": "c8",
+   "k": "fanmeet",
+   "t": "신혜선 팬미팅 [써니 인사이드]",
+   "s": "20261212",
+   "e": "20261212",
+   "r": "seoul",
+   "la": 37.6068,
+   "lo": 127.0417,
+   "v": "동덕여대 백주년기념관 · 오후 2시·6시",
+   "tags": [
+    "신혜선팬미팅",
+    "신혜선"
+   ],
+   "src": "https://isplus.com/article/view/isp202611090197",
+   "st": "일간스포츠",
+   "te": "Shin Hye-sun Fan Meeting [SUNNY INSIDE]",
+   "ve": "Dongduk Women's Univ. Centennial Hall · 2 PM & 6 PM",
+   "i": "https://isplus.com/data/isp/image/2026/11/09/isp20261109000200.800x.0.jpg"
+  },
+  {
+   "id": "c9",
+   "k": "beauty",
+   "t": "올영데이",
+   "s": "20261125",
+   "e": "20261127",
+   "r": "seoul",
+   "la": 37.5636,
+   "lo": 126.9853,
+   "v": "전국 올리브영 · 명동 매장 추천",
+   "tags": [
+    "올영데이",
+    "올리브영"
+   ],
+   "src": "https://benefitshub.co.kr/oliveyoung-sale/",
+   "st": "혜택창고 (매월 25~27일 기준)",
+   "te": "Olive Young Day",
+   "ve": "Olive Young stores nationwide · try Myeongdong"
+  },
+  {
+   "id": "c10",
+   "k": "beauty",
+   "t": "연말 올영세일",
+   "s": "20261130",
+   "e": "20261206",
+   "r": "seoul",
+   "la": 37.5636,
+   "lo": 126.9853,
+   "v": "전국 올리브영 · 일정 예정(공식 확인)",
+   "tags": [
+    "올영세일",
+    "올리브영"
+   ],
+   "src": "https://benefitshub.co.kr/oliveyoung-sale/",
+   "st": "혜택창고 (예정)",
+   "te": "Olive Young Year-End Sale",
+   "ve": "Olive Young stores · dates tentative"
+  },
+  {
+   "id": "c11",
+   "k": "beauty",
+   "t": "올영데이 (12월)",
+   "s": "20261225",
+   "e": "20261227",
+   "r": "seoul",
+   "la": 37.5636,
+   "lo": 126.9853,
+   "v": "전국 올리브영 · 매월 25~27일 기준",
+   "tags": [
+    "올영데이",
+    "올리브영"
+   ],
+   "src": "https://benefitshub.co.kr/oliveyoung-sale/",
+   "st": "혜택창고 (추정)",
+   "te": "Olive Young Day (Dec)",
+   "ve": "Olive Young stores · usually 25th–27th"
+  },
+  {
+   "id": "c12",
+   "k": "kpop",
+   "t": "지드래곤 앵콜 콘서트",
+   "te": "G-DRAGON Encore Concert",
+   "s": "20261212",
+   "e": "20261214",
+   "r": "seoul",
+   "la": 37.4982,
+   "lo": 126.8671,
+   "v": "고척스카이돔",
+   "ve": "Gocheok Sky Dome",
+   "tags": [
+    "GDRAGON",
+    "지드래곤콘서트"
+   ],
+   "src": "https://www.koreaherald.com/article/10611650",
+   "st": "Korea Herald"
+  },
+  {
+   "id": "c13",
+   "k": "film",
+   "t": "제47회 청룡영화상",
+   "s": "20261125",
+   "e": "20261125",
+   "r": "seoul",
+   "la": 37.5283,
+   "lo": 126.916,
+   "v": "KBS홀(여의도)",
+   "tags": [
+    "청룡영화상",
+    "BlueDragonAwards"
+   ],
+   "src": "https://www.soompi.com/article/1882479wpp/guide-to-2026-year-end-shows-and-upcoming-awards-shows-schedules-lineups-nominees-and-more",
+   "st": "Soompi",
+   "te": "47th Blue Dragon Film Awards",
+   "ve": "KBS Hall, Yeouido",
+   "i": "https://0.soompi.io/wp-content/uploads/2026/10/29164609/awards-.jpg"
+  },
+  {
+   "id": "c14",
+   "k": "award",
+   "t": "2026 KBS 가요대축제",
+   "s": "20261218",
+   "e": "20261218",
+   "r": "seoul",
+   "la": 37.5638,
+   "lo": 126.833,
+   "v": "KBS 아레나 · 오후 7시",
+   "tags": [
+    "KBS가요대축제",
+    "KBSSongFestival"
+   ],
+   "src": "https://www.soompi.com/article/1882479wpp/guide-to-2026-year-end-shows-and-upcoming-awards-shows-schedules-lineups-nominees-and-more",
+   "st": "Soompi",
+   "te": "2026 KBS Song Festival",
+   "ve": "KBS Arena · 7 PM",
+   "i": "https://0.soompi.io/wp-content/uploads/2026/10/29164609/awards-.jpg"
+  },
+  {
+   "id": "c15",
+   "k": "award",
+   "t": "2026 APAN 스타 어워즈",
+   "s": "20261223",
+   "e": "20261223",
+   "r": "seoul",
+   "v": "상명아트센터 계당홀",
+   "tags": [
+    "APAN스타어워즈",
+    "APANStarAwards"
+   ],
+   "src": "https://www.soompi.com/article/1882479wpp/guide-to-2026-year-end-shows-and-upcoming-awards-shows-schedules-lineups-nominees-and-more",
+   "st": "Soompi",
+   "te": "2026 APAN Star Awards",
+   "ve": "Sangmyung Art Center Gyedang Hall",
+   "i": "https://0.soompi.io/wp-content/uploads/2026/10/29164609/awards-.jpg"
+  },
+  {
+   "id": "c16",
+   "k": "kpop",
+   "t": "규현 콘서트 CONTINUE",
+   "s": "20261218",
+   "e": "20261220",
+   "r": "seoul",
+   "la": 37.5577,
+   "lo": 127.0069,
+   "v": "장충체육관",
+   "tags": [
+    "규현",
+    "KYUHYUN"
+   ],
+   "who": "Kyuhyun",
+   "src": "https://www.soompi.com/article/1797016wpp",
+   "st": "Soompi",
+   "te": "Kyuhyun CONTINUE Concert",
+   "ve": "Jangchung Arena, Seoul"
+  },
+  {
+   "id": "c17",
+   "k": "kpop",
+   "t": "FLARE U 콘서트 Where U'RE",
+   "s": "20261226",
+   "e": "20261227",
+   "r": "seoul",
+   "la": 37.5577,
+   "lo": 127.0069,
+   "v": "장충체육관",
+   "tags": [
+    "FLAREU"
+   ],
+   "who": "FLARE U",
+   "src": "https://www.soompi.com/article/1797016wpp",
+   "st": "Soompi",
+   "te": "FLARE U Where U'RE",
+   "ve": "Jangchung Arena, Seoul"
+  },
+  {
+   "id": "c18",
+   "k": "fanmeet",
+   "t": "티파니 영 Edge of Calm",
+   "s": "20261227",
+   "e": "20261227",
+   "r": "seoul",
+   "la": 37.5617,
+   "lo": 126.9467,
+   "v": "이화여대 대강당",
+   "tags": [
+    "TiffanyYoung",
+    "티파니영"
+   ],
+   "who": "Tiffany Young",
+   "src": "https://www.soompi.com/article/1797016wpp",
+   "st": "Soompi",
+   "te": "Tiffany Young Edge of Calm",
+   "ve": "Ewha Womans University Auditorium, Seoul"
+  },
+  {
+   "id": "c19",
+   "k": "kpop",
+   "t": "펜타곤 101010",
+   "s": "20261231",
+   "e": "20261231",
+   "r": "seoul",
+   "la": 37.5392,
+   "lo": 127.0017,
+   "v": "블루스퀘어 우리WON뱅킹홀",
+   "tags": [
+    "PENTAGON",
+    "펜타곤"
+   ],
+   "who": "PENTAGON",
+   "src": "https://www.soompi.com/article/1797016wpp",
+   "st": "Soompi",
+   "te": "PENTAGON 101010",
+   "ve": "BLUESQUARE Woori WON Banking Hall, Seoul"
+  },
+  {
+   "id": "c20",
+   "k": "fanmeet",
+   "t": "NEXZ 2ND FAN MEETING <MERRY MERRY NEX2Y!>",
+   "te": "NEXZ 2nd Fan Meeting <MERRY MERRY NEX2Y!>",
+   "s": "20261219",
+   "e": "20261220",
+   "r": "gyeonggi",
+   "la": 37.6689,
+   "lo": 126.7459,
+   "v": "킨텍스 제2전시장 8B홀 (일산)",
+   "ve": "KINTEX Exhibition Center 2, Hall 8B (Ilsan)",
+   "tags": [
+    "NEXZ",
+    "MERRYMERRYNEX2Y"
+   ],
+   "i": "https://images.khan.co.kr/article/2026/11/12/news-p.v1.20261112.9457a7ee23224bd4a7df8defd37f1b7e_P1.jpg",
+   "src": "https://sports.khan.co.kr/en/article/202611121619007",
+   "st": "Sports Kyunghyang"
+  },
+  {
+   "id": "c21",
+   "k": "fanmeet",
+   "t": "육성재 팬미팅 Five to Seven",
+   "te": "Yook Sung-jae Fan Meeting <Five to Seven>",
+   "s": "20261211",
+   "e": "20261212",
+   "r": "seoul",
+   "la": 37.5626,
+   "lo": 126.9468,
+   "v": "이화여대 대강당 (12/11 19시, 12/12 18시)",
+   "ve": "Ewha Womans Univ. Grand Auditorium (Dec 11 7pm, Dec 12 6pm)",
+   "tags": [
+    "육성재",
+    "FiveToSeven"
+   ],
+   "i": "https://images.khan.co.kr/article/2026/11/04/news-p.v1.20261104.e4dfcc08502a49a5bec9f8ec7adc4e3f_P1.png",
+   "src": "https://sports.khan.co.kr/en/article/202611041614007",
+   "st": "Sports Kyunghyang"
+  },
+  {
+   "id": "c22",
+   "k": "kpop",
+   "t": "2026 패닉 콘서트 PANIC IS COMING, AGAIN",
+   "te": "2026 Panic Concert <PANIC IS COMING, AGAIN>",
+   "s": "20261204",
+   "e": "20261206",
+   "r": "seoul",
+   "la": 37.5963,
+   "lo": 127.0518,
+   "v": "경희대 평화의전당 (금 19:30, 토 17시, 일 16시)",
+   "ve": "Kyung Hee Univ. Peace Hall (Fri 7:30pm, Sat 5pm, Sun 4pm)",
+   "tags": [
+    "패닉콘서트",
+    "PANIC"
+   ],
+   "i": "https://images.khan.co.kr/article/2026/10/12/news-p.v1.20261012.87d5fa8e0373407c839fb66b5007eedb_P1.png",
+   "src": "https://sports.khan.co.kr/en/article/202610121346007",
+   "st": "Sports Kyunghyang"
+  },
+  {
+   "id": "c23",
+   "k": "kpop",
+   "t": "자우림 MIDNIGHT EXPRESS 2026-2027 (서울)",
+   "te": "Jaurim MIDNIGHT EXPRESS 2026-2027 (Seoul)",
+   "s": "20261218",
+   "e": "20261220",
+   "r": "seoul",
+   "la": 37.5206,
+   "lo": 127.1216,
+   "v": "올림픽공원 올림픽홀",
+   "ve": "Olympic Hall, Olympic Park",
+   "tags": [
+    "자우림",
+    "MIDNIGHTEXPRESS"
+   ],
+   "who": "Jaurim",
+   "i": "https://images.khan.co.kr/article/2026/10/24/news-p.v1.20261024.cb82e481e87d4b62bb94d7e109e37d5d_P1.jpeg",
+   "src": "https://sports.khan.co.kr/en/article/202610240351007",
+   "st": "Sports Kyunghyang"
+  },
+  {
+   "id": "c24",
+   "k": "kpop",
+   "t": "요네즈 켄시 내한 콘서트 GHOST",
+   "te": "Kenshi Yonezu Korea Concert GHOST",
+   "s": "20270114",
+   "e": "20270117",
+   "r": "incheon",
+   "la": 37.4426,
+   "lo": 126.4533,
+   "v": "인스파이어 아레나 (1/14 19:30, 1/16·17 19시)",
+   "ve": "Inspire Arena (Jan 14 7:30pm, Jan 16-17 7pm)",
+   "tags": [
+    "요네즈켄시",
+    "KenshiYonezu"
+   ],
+   "who": "Kenshi Yonezu",
+   "i": "https://images.khan.co.kr/article/2026/10/17/news-p.v1.20261017.b4218285963c4f40b309fd79146c8f5c_P1.jpg",
+   "src": "https://sports.khan.co.kr/en/article/202610170100007",
+   "st": "Sports Kyunghyang"
+  },
+  {
+   "id": "c25",
+   "k": "fanmeet",
+   "t": "대니 안 생일 팬미팅 당근마켓",
+   "te": "Danny Ahn Birthday Fan Meeting Denggeun Market",
+   "s": "20261219",
+   "e": "20261220",
+   "r": "seoul",
+   "la": 37.5116,
+   "lo": 127.059,
+   "v": "코엑스 아티움 우리은행홀 (12/19 18시, 12/20 16시)",
+   "ve": "COEX Artium, Woori Bank Hall (Dec 19 6pm, Dec 20 4pm)",
+   "tags": [
+    "대니안",
+    "DannyDay"
+   ],
+   "i": "https://images.khan.co.kr/article/2026/11/17/news-p.v1.20261117.4f5812a37e404260a86bd3cd1bdf7df3_P1.jpg",
+   "src": "https://sports.khan.co.kr/en/article/202611170400007",
+   "st": "Sports Kyunghyang"
+  },
+  {
+   "id": "c26",
+   "k": "fanmeet",
+   "t": "장우혁 30주년 팬미팅 My Universe",
+   "te": "Jang Woo-hyuk 30th Anniversary Fan Meeting My Universe",
+   "s": "20261212",
+   "e": "20261212",
+   "r": "seoul",
+   "la": 37.5617,
+   "lo": 126.9467,
+   "v": "이화여대 삼성홀 (14시·17시)",
+   "ve": "Ewha Womans Univ. Samsung Hall (2pm & 5pm)",
+   "tags": [
+    "장우혁",
+    "MyUniverse"
+   ],
+   "i": "https://images.khan.co.kr/article/2026/11/13/news-p.v1.20261113.d9c7028186d94a35ada0903892cd149e_P1.jpg",
+   "src": "https://sports.khan.co.kr/en/article/202611130937007",
+   "st": "Sports Kyunghyang"
+  },
+  {
+   "id": "c27",
+   "k": "fanmeet",
+   "t": "앤투블 팬콘 W!nter inside",
+   "te": "AND2BLE FAN-CON <W!nter inside>",
+   "s": "20261204",
+   "e": "20261206",
+   "r": "seoul",
+   "la": 37.5906,
+   "lo": 127.032,
+   "v": "고려대 화정체육관",
+   "ve": "Korea Univ. Hwajeong Gymnasium",
+   "tags": [
+    "AND2BLE",
+    "앤투블"
+   ],
+   "i": "https://images.khan.co.kr/article/2026/10/29/news-p.v1.20261029.319b6ebdf73441c1a65476dbcf5fcbe0_P1.png",
+   "src": "https://sports.khan.co.kr/en/article/202610290727007",
+   "st": "Sports Kyunghyang"
+  },
+  {
+   "id": "c28",
+   "k": "fanmeet",
+   "t": "EXO-KASE 팬콘 SILENT CITY 서울",
+   "te": "EXO-KASE Fancon SILENT CITY in Seoul",
+   "s": "20270109",
+   "e": "20270110",
+   "r": "seoul",
+   "la": 37.5906,
+   "lo": 127.032,
+   "v": "고려대 화정체육관",
+   "ve": "Korea Univ. Hwajeong Gymnasium",
+   "tags": [
+    "EXOKASE",
+    "엑소"
+   ],
+   "who": "EXO-KASE",
+   "src": "https://www.soompi.com/article/1880039wpp/2027-k-pop-tour-masterlist-concerts-fan-meetings-and-more",
+   "st": "Soompi"
+  },
+  {
+   "id": "c29",
+   "k": "kpop",
+   "t": "태연 콘서트 F.L.Y.",
+   "te": "Taeyeon Concert F.L.Y.",
+   "s": "20270115",
+   "e": "20270117",
+   "r": "seoul",
+   "la": 37.5189,
+   "lo": 127.1269,
+   "v": "KSPO 돔",
+   "ve": "KSPO DOME",
+   "tags": [
+    "태연",
+    "TAEYEON"
+   ],
+   "who": "Taeyeon",
+   "src": "https://www.soompi.com/article/1880039wpp/2027-k-pop-tour-masterlist-concerts-fan-meetings-and-more",
+   "st": "Soompi"
+  },
+  {
+   "id": "c30",
+   "k": "kpop",
+   "t": "KATSEYE 월드투어 THE WILDWORLD TOUR 서울",
+   "te": "KATSEYE THE WILDWORLD TOUR in Seoul",
+   "s": "20270204",
+   "e": "20270204",
+   "r": "seoul",
+   "la": 37.5189,
+   "lo": 127.1269,
+   "v": "KSPO 돔",
+   "ve": "KSPO DOME",
+   "tags": [
+    "KATSEYE"
+   ],
+   "who": "KATSEYE",
+   "src": "https://www.soompi.com/article/1880039wpp/2027-k-pop-tour-masterlist-concerts-fan-meetings-and-more",
+   "st": "Soompi"
+  }
+ ]
 }
