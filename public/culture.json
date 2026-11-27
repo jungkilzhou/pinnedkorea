@@ -1,5 +1,5 @@
 {
- "upd": "2026-11-26T23:00:00+09:00",
+ "upd": "2026-11-27T23:00:00+09:00",
  "ev": [
   {
    "id": "c1",
@@ -596,6 +596,48 @@
    "who": "KATSEYE",
    "src": "https://www.soompi.com/article/1880039wpp/2027-k-pop-tour-masterlist-concerts-fan-meetings-and-more",
    "st": "Soompi"
+  },
+  {
+   "id": "c31",
+   "k": "kpop",
+   "t": "2027 에픽하이 콘서트",
+   "s": "20270122",
+   "e": "20270124",
+   "r": "seoul",
+   "la": 37.5189,
+   "lo": 127.1269,
+   "v": "KSPO 돔 · 1/22 20시, 1/23 18시, 1/24 16시",
+   "tags": [
+    "에픽하이",
+    "EPIKHIGH"
+   ],
+   "who": "EPIK HIGH",
+   "src": "https://sports.khan.co.kr/en/article/202609291423007",
+   "st": "Kyunghyang",
+   "te": "2027 EPIK HIGH Concert",
+   "ve": "KSPO DOME · Jan 22 8pm, Jan 23 6pm, Jan 24 4pm",
+   "i": "https://images.khan.co.kr/article/2026/09/29/news-p.v1.20260929.b818d1d0d9d4469eb9099fce5cf17618_P1.jpg"
+  },
+  {
+   "id": "c32",
+   "k": "kpop",
+   "t": "2027 손태진 전국투어 콘서트 Bon Voyage (서울)",
+   "s": "20270109",
+   "e": "20270110",
+   "r": "seoul",
+   "la": 37.5206,
+   "lo": 127.1255,
+   "v": "올림픽홀 · 올림픽공원",
+   "tags": [
+    "손태진",
+    "손태진콘서트"
+   ],
+   "who": "손태진",
+   "src": "https://sports.khan.co.kr/en/article/202611111420007",
+   "st": "Kyunghyang",
+   "te": "2027 Son Tae-jin Nationwide Tour Concert 'Bon Voyage' (Seoul)",
+   "ve": "Olympic Hall, Olympic Park",
+   "i": "https://images.khan.co.kr/article/2026/11/11/news-p.v1.20261111.7e1e2fce9de64195ad1a331ed302786c_P1.png"
   }
  ]
 }
